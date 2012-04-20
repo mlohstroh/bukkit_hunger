@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerListener implements Listener
 {
@@ -25,5 +26,11 @@ public class PlayerListener implements Listener
 			Player player = (Player)event.getEntity();
 			player.sendMessage(ChatColor.AQUA + "You are now allowed to spectate! /s");
 		}
+	}
+	
+	@EventHandler
+	public void PlayerJoin(PlayerJoinEvent event)
+	{
+		
 	}
 }

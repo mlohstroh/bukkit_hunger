@@ -96,6 +96,37 @@ public class HungerGames extends JavaPlugin
 			mainTimer.schedule(new HungerTimer(true), 1000);
 		}
 		this.MakePlayerInvisible();
+		this.AccelerateHunger();
+	}
+	
+	private void AccelerateHunger()
+	{
+		Player[] players = getServer().getOnlinePlayers();
+		for(Player player : players)
+		{
+			if(!IsPlayerDead(player))
+			{
+				//exhaustion ranges from 0 - 4. when a person moves, he gains exhaustion.
+				//when it hits 4, his hunger goes down a point. hunger ranges from 0-20 like health
+				if(player.getExhaustion() < 2.75f)
+				{
+					player.setExhaustion(2.75f);
+				}
+			}
+		}
+	}
+	
+	
+	private boolean IsPlayerDead(Player player)
+	{
+		for(Player temp : killedPlayers)
+		{
+			if(temp == player)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private void MakePlayerInvisible()
