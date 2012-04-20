@@ -23,23 +23,35 @@ THE SOFTWARE.
 
 package net.evtr.hungergames;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
+import java.util.logging.Logger;
+
+import net.minecraft.server.Packet29DestroyEntity;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class HungerGames extends JavaPlugin
 {
 	public Vector<Player> killedPlayers;
+	public Timer mainTimer;
+	BlockListener blockListener;
+	Logger log = Logger.getLogger("Minecraft");
 	
 	public void onEnable()
 	{
-		getServer().getPluginManager().registerEvents(new BlockListener(), this);
+		blockListener = new BlockListener();
+		getServer().getPluginManager().registerEvents(blockListener, this);
 		getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 		killedPlayers = new Vector<Player>();
+		mainTimer = new Timer();
+		mainTimer.schedule(new HungerTimer(true), 1);
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
@@ -76,4 +88,53 @@ public class HungerGames extends JavaPlugin
 		return true;
 	}
 
+	private void handleAllTimerTasks(boolean schedule)
+	{
+		if (schedule)
+		{
+			//reschedule every second
+			mainTimer.schedule(new HungerTimer(true), 1000);
+		}
+		this.MakePlayerInvisible();
+	}
+	
+	private void MakePlayerInvisible()
+	{
+		Player[] players = getServer().getOnlinePlayers();
+		
+		for (Player invisiblePlayer : this.killedPlayers)
+		{
+			for(Player watchingPlayer : players)
+			{
+				if(watchingPlayer != invisiblePlayer)
+				{
+					//if they can see them, make them invisible
+					if(watchingPlayer.canSee(invisiblePlayer))
+					{
+						CraftPlayer p1 = (CraftPlayer)invisiblePlayer;
+						CraftPlayer p2 = (CraftPlayer)watchingPlayer;
+						p2.getHandle().netServerHandler.sendPacket(new Packet29DestroyEntity(p1.getEntityId()));
+					}
+				}
+			}
+		}
+	}
+	
+	public class HungerTimer extends TimerTask
+	{
+		 private boolean startTimer = false;
+
+		  public HungerTimer() { }
+
+		  public HungerTimer(boolean startTimer)
+		  {
+		    this.startTimer = startTimer;
+		  }
+
+		  public void run()
+		  {
+			  HungerGames.this.handleAllTimerTasks(startTimer);
+		  }
+	}
+	
 }
