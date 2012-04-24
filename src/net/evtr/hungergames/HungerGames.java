@@ -43,12 +43,16 @@ public class HungerGames extends JavaPlugin
 	public Timer mainTimer;
 	BlockListener blockListener;
 	Logger log = Logger.getLogger("Minecraft");
+	EntityListener entityListener;
+	
 	
 	public void onEnable()
 	{
+		entityListener = new EntityListener(this);
 		blockListener = new BlockListener();
 		getServer().getPluginManager().registerEvents(blockListener, this);
 		getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+		getServer().getPluginManager().registerEvents(entityListener, this);
 		killedPlayers = new Vector<Player>();
 		mainTimer = new Timer();
 		mainTimer.schedule(new HungerTimer(true), 1);
@@ -84,6 +88,14 @@ public class HungerGames extends JavaPlugin
 			return true;
 			
 		}
+		if(command.equalsIgnoreCase("join"))
+		{
+			
+		}
+		if(command.equalsIgnoreCase("savepos"))
+		{
+			
+		}
 		
 		return true;
 	}
@@ -108,9 +120,9 @@ public class HungerGames extends JavaPlugin
 			{
 				//exhaustion ranges from 0 - 4. when a person moves, he gains exhaustion.
 				//when it hits 4, his hunger goes down a point. hunger ranges from 0-20 like health
-				if(player.getExhaustion() < 2.75f)
+				if(player.getExhaustion() < 3.0f)
 				{
-					player.setExhaustion(2.75f);
+					player.setExhaustion(3.0f);
 				}
 			}
 		}

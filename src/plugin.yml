@@ -9,3 +9,10 @@ commands:
     spectator:
         description: 'Allows spectator mode'
         usage: 'Usage: /spectator'
+    join:
+        description: 'Joins the current game'
+        usage: ''
+    savepos:
+        description: ''
+        usage: ''
+            
