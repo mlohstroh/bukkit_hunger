@@ -12,7 +12,7 @@ commands:
     join:
         description: 'Joins the current game'
         usage: ''
-    savepos:
-        description: ''
-        usage: ''
+    hg:
+        description: 'The hunger games command'
+        usage: '/hg join'
             

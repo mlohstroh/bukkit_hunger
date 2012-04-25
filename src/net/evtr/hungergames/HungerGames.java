@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import net.minecraft.server.Packet29DestroyEntity;
 
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -44,7 +45,7 @@ public class HungerGames extends JavaPlugin
 	BlockListener blockListener;
 	Logger log = Logger.getLogger("Minecraft");
 	EntityListener entityListener;
-	
+	Game currentGame = null;
 	
 	public void onEnable()
 	{
@@ -62,15 +63,17 @@ public class HungerGames extends JavaPlugin
 	{
 		String command = cmd.getName();
 		
+		//essentially only allowing players to send messages
 		if(!(sender instanceof Player))
 		{
 			return false;
 		}
 		
+		Player player = (Player)sender;
+		
 		//command for spectator mode
 		if (command.equalsIgnoreCase("s"))
 		{
-			Player player = (Player)sender;
 			
 			for(Player tempPlayer : killedPlayers)
 			{
@@ -92,9 +95,35 @@ public class HungerGames extends JavaPlugin
 		{
 			
 		}
-		if(command.equalsIgnoreCase("savepos"))
+		if(command.equalsIgnoreCase("hg"))
 		{
+			//then handle the join, and create
 			
+			if(args[0].equalsIgnoreCase("join"))
+			{
+				if(currentGame != null)
+				{
+					currentGame.PlayerJoin(player);
+					return true;
+				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + "A game is not going on! Why don't you start one?");
+				}
+			}
+			if(args[0].equalsIgnoreCase("create"))
+			{
+				if(currentGame == null)
+				{
+					//make a game
+					currentGame = new Game(this);
+					return true;
+				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + "A game is already in progress!");
+				}
+			}	
 		}
 		
 		return true;
@@ -120,6 +149,11 @@ public class HungerGames extends JavaPlugin
 			{
 				//exhaustion ranges from 0 - 4. when a person moves, he gains exhaustion.
 				//when it hits 4, his hunger goes down a point. hunger ranges from 0-20 like health
+				if(player.getFoodLevel() == 0)
+				{
+					//killing the player quite quickly :) this might need to change...
+					player.setHealth(player.getHealth() - 1);
+				}
 				if(player.getExhaustion() < 3.0f)
 				{
 					player.setExhaustion(3.0f);
@@ -128,6 +162,10 @@ public class HungerGames extends JavaPlugin
 		}
 	}
 	
+	public World getDefaultWorld()
+	{
+		return getServer().getWorlds().get(0);
+	}
 	
 	private boolean IsPlayerDead(Player player)
 	{
