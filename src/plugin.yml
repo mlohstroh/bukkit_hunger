@@ -3,15 +3,6 @@ version: 0.1
 main: net.evtr.hungergames.HungerGames
 
 commands:
-    s:
-        description: 'Allows spectator mode'
-        usage: 'Usage: /s'
-    spectator:
-        description: 'Allows spectator mode'
-        usage: 'Usage: /spectator'
-    join:
-        description: 'Joins the current game'
-        usage: ''
     hg:
         description: 'The hunger games command'
         usage: '/hg join'

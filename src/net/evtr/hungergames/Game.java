@@ -18,6 +18,7 @@ public class Game
 	private HungerGames plugin;
 	private HashMap<Integer, Location> startingPositions;
 	private int lastPlayerID = 0;
+	private Player mGameHost;
 	
 	//horrible name, I know! please feel free to change it
 	public Game(HungerGames instance)
@@ -51,8 +52,9 @@ public class Game
 			
 			try 
 			{
+				//TODO: These should be changable
 				BufferedWriter writer = new BufferedWriter(new FileWriter(positions));
-				
+				//write default positions
 				writer.write("0:-1559.0,59.0,-629.0");
 				writer.newLine();
 				writer.write("1:-1565.0,59.0,-633.0");
@@ -139,6 +141,25 @@ public class Game
 		catch (Exception e) 
 		{
 			e.printStackTrace();
+		}
+	}
+	
+	public void HostGame(Player player)
+	{
+		if(mGameHost != null)
+		{
+			player.sendMessage(ChatColor.RED + "You cannot be host this game!");
+			player.sendMessage(ChatColor.RED + "Someone else is host!");
+		}
+		else
+		{
+			mGameHost = player;
+			
+			//TODO: Setup permissions so not everyone can be a host
+			player.setAllowFlight(true);
+			player.setFlying(true);
+			player.sendMessage(ChatColor.GOLD + "You may now fly!");
+			player.sendMessage(ChatColor.GOLD + "You can still take damage though!");
 		}
 	}
 	
