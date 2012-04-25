@@ -72,9 +72,7 @@ public class HungerGames extends JavaPlugin
 		Player player = (Player)sender;
 		
 		if(command.equalsIgnoreCase("hg"))
-		{
-			//then handle the join, and create
-			
+		{	
 			if(args[0].equalsIgnoreCase("join"))
 			{
 				if(currentGame != null)

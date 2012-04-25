@@ -49,59 +49,58 @@ public class Game
 		
 		if(!positions.exists())
 		{
-			
 			try 
 			{
 				//TODO: These should be changable
 				BufferedWriter writer = new BufferedWriter(new FileWriter(positions));
 				//write default positions
-				writer.write("0:-1559.0,59.0,-629.0");
+				writer.write("0:-1558.5,59.0,-628.5");
 				writer.newLine();
-				writer.write("1:-1565.0,59.0,-633.0");
+				writer.write("1:-1564.5,59.0,-632.5");
 				writer.newLine();
-				writer.write("2:-1571.0,59.0,-635.0");
+				writer.write("2:-1570.5,59.0,-634.5");
 				writer.newLine();
-				writer.write("3:-1577.0,59.0,-636.0");
+				writer.write("3:-1576.5,59.0,-635.5");
 				writer.newLine();
-				writer.write("4:-1583.0,59.0,-635.0");
+				writer.write("4:-1582.5,59.0,-634.5");
 				writer.newLine();
-				writer.write("5:-1589.0,59.0,-633.0");
+				writer.write("5:-1588.5,59.0,-632.5");
 				writer.newLine();
-				writer.write("6:-1595.0,59.0,-629.0");
+				writer.write("6:-1594.5,59.0,-628.5");
 				writer.newLine();
-				writer.write("7:-1599.0,59.0,-623.0");
+				writer.write("7:-1598.5,59.0,-622.5");
 				writer.newLine();
-				writer.write("8:-1601.0,59.0,-617.0");
+				writer.write("8:-1600.5,59.0,-616.5");
 				writer.newLine();
-				writer.write("9:-1602.0,59.0,-611.0");
+				writer.write("9:-1601.5,59.0,-610.5");
 				writer.newLine();
-				writer.write("10:-1601.0,59.0,-605.0");
+				writer.write("10:-1600.5,59.0,-604.5");
 				writer.newLine();
-				writer.write("11:-1599.0,59.0,-599.0");
+				writer.write("11:-1598.5,59.0,-598.5");
 				writer.newLine();
-				writer.write("12:-1595.0,59.0,-593.0");
+				writer.write("12:-1594.5,59.0,-592.5");
 				writer.newLine();
-				writer.write("13:-1589.0,59.0,-589.0");
+				writer.write("13:-1588.5,59.0,-588.5");
 				writer.newLine();
-				writer.write("14:-1583.0,59.0,-587.0");
+				writer.write("14:-1582.5,59.0,-586.5");
 				writer.newLine();
-				writer.write("15:-1577.0,59.0,-586.0");
+				writer.write("15:-1576.5,59.0,-585.5");
 				writer.newLine();
-				writer.write("16:-1571.0,59.0,-587.0");
+				writer.write("16:-1570.5,59.0,-586.5");
 				writer.newLine();
-				writer.write("17:-1565.0,59.0,-589.0");
+				writer.write("17:-1564.5,59.0,-588.5");
 				writer.newLine();
-				writer.write("18:-1559.0,59.0,-593.0");
+				writer.write("18:-1558.5,59.0,-592.5");
 				writer.newLine();
-				writer.write("19:-1555.0,59.0,-599.0");
+				writer.write("19:-1554.5,59.0,-598.5");
 				writer.newLine();
-				writer.write("20:-1553.0,59.0,-605.0");
+				writer.write("20:-1552.5,59.0,-604.5");
 				writer.newLine();
-				writer.write("21:-1552.0,59.0,-611.0");
+				writer.write("21:-1551.5,59.0,-610.5");
 				writer.newLine();
-				writer.write("22:-1553.0,59.0,-617.0");
+				writer.write("22:-1552.5,59.0,-616.5");
 				writer.newLine();
-				writer.write("23:-1555.0,59.0,-623.0");
+				writer.write("23:-1554.5,59.0,-622.5");
 				
 				writer.close();
 			} 
@@ -113,7 +112,6 @@ public class Game
 		
 		try 
 		{
-			plugin.log.info("I'm over herE!!!!");
 			BufferedReader reader = new BufferedReader(new FileReader(positions));
 			
 			String line = null;
@@ -133,8 +131,6 @@ public class Game
 					
 					startingPositions.put(lastLocationIndex, tempLoc);
 					lastLocationIndex++;
-					
-					plugin.log.info(Integer.valueOf(lastLocationIndex) + ":" + tempLoc.toString());
 				}
 			}
 		}
@@ -156,6 +152,7 @@ public class Game
 			mGameHost = player;
 			
 			//TODO: Setup permissions so not everyone can be a host
+			player.teleport(new Location(plugin.getDefaultWorld(), -1573.5, 67.0, -642.5));	//TODO: Find a way to somehow not hard code that vector
 			player.setAllowFlight(true);
 			player.setFlying(true);
 			player.sendMessage(ChatColor.GOLD + "You may now fly!");
@@ -165,11 +162,21 @@ public class Game
 	
 	public void PlayerJoin(Player player)
 	{
-		if(hungerPlayers.get(player) == null)
+		if(player == mGameHost)
+		{
+			player.sendMessage(ChatColor.RED + "You can't join if you're the host!");
+		}
+		if(hungerPlayers.get(player) != null)
 		{
 			player.sendMessage(ChatColor.RED + "You can't join twice!");
 		}
 		//add him to the list
+		if((lastPlayerID + 1) >= 24)
+		{
+			player.sendMessage(ChatColor.RED + "There are already 24 players in this match!");
+			player.sendMessage(ChatColor.RED + "Please wait until match is over!");
+			return;
+		}
 		hungerPlayers.put(player, new HungerPlayer(player.getDisplayName(), lastPlayerID++));
 		
 		plugin.getServer().broadcastMessage(ChatColor.GOLD + player.getDisplayName() + " has just joined the survivial games!");
