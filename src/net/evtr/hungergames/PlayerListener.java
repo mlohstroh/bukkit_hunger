@@ -47,7 +47,7 @@ public class PlayerListener implements Listener
 			//then a player died so let's add him to the list
 			hgInstance.killedPlayers.add((Player)event.getEntity());
 			Player player = (Player)event.getEntity();
-			player.sendMessage(ChatColor.AQUA + "You are now allowed to spectate! /s");
+			player.sendMessage(ChatColor.AQUA + "HA. You died. You can spectate with /hg s, or you can become a sponsor with /hg sp");
 		}
 	}
 	

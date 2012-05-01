@@ -45,6 +45,10 @@ public class Game
 	private Player mGameHost;
 	private int timerSeconds;
 	
+	public HungerPlayer getPlayer(Player player) {
+		return hungerPlayers.get(player);
+	}
+	
 	//horrible name, I know! please feel free to change it
 	public Game(HungerGames instance)
 	{

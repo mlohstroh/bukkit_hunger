@@ -114,28 +114,45 @@ public class HungerGames extends JavaPlugin
 					}
 				}
 				//command for spectator mode
-				if (args[0].equalsIgnoreCase("s"))
+				if (args[0].equalsIgnoreCase("s") || args[0].equalsIgnoreCase("sp"))
 				{
 					if(currentGame != null)
+
 					{
-						//TODO: We will need to revamp this once Game.java gets working correctly 
-						for(Player tempPlayer : killedPlayers)
+						if(currentGame != null)
 						{
-							if(tempPlayer == player)
+							//TODO: We will need to revamp this once Game.java gets working correctly 
+							for(Player tempPlayer : killedPlayers)
 							{
-								player.setAllowFlight(true);
-								player.setFlying(true);
-								player.sendMessage(ChatColor.AQUA + "You may now fly!");
-								player.sendMessage(ChatColor.AQUA + "You can still take damage though!");
-								return true;
+								if(tempPlayer == player)
+								{
+									player.setAllowFlight(true);
+									player.setFlying(true);
+									player.sendMessage(ChatColor.AQUA + "You may now fly!");
+									player.sendMessage(ChatColor.AQUA + "You can still take damage though!");
+									return true;
+								}
 							}
+							//if we got here, return so the server doesn't flip
+							player.sendMessage(ChatColor.RED + "You aren't allowed in spectator mode!");
 						}
-						//if we got here, return so the server doesn't flip
-						player.sendMessage(ChatColor.RED + "You aren't allowed in spectator mode!");
+						else
+						{
+							player.sendMessage(ChatColor.RED + "You can't spectate a game that is not going on!");
+						}
 					}
-					else
-					{
-						player.sendMessage(ChatColor.RED + "You can't spectate a game that is not going on!");
+				}
+				
+				if ( args[0].equalsIgnoreCase("sp") ) {
+					if ( currentGame != null ) {
+						HungerPlayer hPlayer = currentGame.getPlayer(player);
+						if ( hPlayer.mIsDied ) {
+							hPlayer.mIsSponsor = true;
+							player.sendMessage(ChatColor.GOLD + "You can now give people some MONIES.");
+							//TODO: Make them a proper sponsor.
+						} else {
+							player.sendMessage(ChatColor.RED + "You're not dead yet!");
+						}
 					}
 				}
 			}
