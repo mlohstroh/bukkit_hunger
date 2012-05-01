@@ -1,3 +1,6 @@
 .DS_Store
 bin/*
-.settings/org.eclipse.ltk.core.refactoring.prefs
+.settings/*
+.classpath
+.project
+Thumbs.db
