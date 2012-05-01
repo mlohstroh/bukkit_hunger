@@ -34,6 +34,7 @@ import java.util.HashMap;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class Game
 {
@@ -42,6 +43,7 @@ public class Game
 	private HashMap<Integer, Location> startingPositions;
 	private int lastPlayerID = 0;
 	private Player mGameHost;
+	private int timerSeconds;
 	
 	//horrible name, I know! please feel free to change it
 	public Game(HungerGames instance)
@@ -192,6 +194,7 @@ public class Game
 		if(hungerPlayers.get(player) != null)
 		{
 			player.sendMessage(ChatColor.RED + "You can't join twice!");
+			return;
 		}
 		//add him to the list
 		if((lastPlayerID + 1) >= 24)
@@ -208,5 +211,54 @@ public class Game
 		HungerPlayer tempPlayer = hungerPlayers.get(player);
 		
 		player.teleport(startingPositions.get(tempPlayer.getPlayerID()));
+	}
+	
+
+	public void ForcePlayersTogether()
+	{
+		//update the seconds
+		timerSeconds++;
+		//after a minute
+		if(timerSeconds >= 60)
+		{
+			Player[] players = (Player[]) this.hungerPlayers.keySet().toArray();
+			for(Player player : players)
+			{
+				Player closestPlayer = this.GetClosestPlayer(player, players);
+				if(player != closestPlayer)
+				{
+					Vector current = player.getLocation().toVector();
+					Vector otherPlayer = closestPlayer.getLocation().toVector();
+					Vector newVector = current.subtract(otherPlayer);
+					newVector = newVector.normalize();
+				}
+				else
+				{
+					//no close player...
+					plugin.log.info("No close player was found. Are you the only one left alive??");
+				}
+			}
+		}
+	}
+	
+	private Player GetClosestPlayer(Player player, Player[] allPlayers)
+	{
+		double shortestDistance = 1000000000.0;
+		//for initial purposes
+		Player playerToReturn = player;
+		
+		for(Player tempPlayer : allPlayers)
+		{
+			if(tempPlayer != player)
+			{
+				double distance = tempPlayer.getLocation().distance(player.getLocation());
+				if(distance > shortestDistance)
+				{
+					shortestDistance = distance;
+					playerToReturn = tempPlayer;
+				}
+			}
+		}
+		return playerToReturn;
 	}
 }

@@ -45,7 +45,7 @@ public class HungerGames extends JavaPlugin
 	BlockListener blockListener;
 	Logger log = Logger.getLogger("Minecraft");
 	EntityListener entityListener;
-	Game currentGame = null;
+	public Game currentGame = null;
 	
 	public void onEnable()
 	{
@@ -73,67 +73,70 @@ public class HungerGames extends JavaPlugin
 		
 		if(command.equalsIgnoreCase("hg"))
 		{	
-			if(args[0].equalsIgnoreCase("join"))
+			if(args[0] != null)
 			{
-				if(currentGame != null)
+				if(args[0].equalsIgnoreCase("join"))
 				{
-					currentGame.PlayerJoin(player);
-					return true;
-				}
-				else
-				{
-					player.sendMessage(ChatColor.RED + "A game is not going on! Why don't you start one?");
-				}
-			}
-			if(args[0].equalsIgnoreCase("create"))
-			{
-				if(currentGame == null)
-				{
-					//make a game
-					currentGame = new Game(this);
-					player.sendMessage(ChatColor.GOLD + "You have created a game! You may either join or host!");
-					player.sendMessage(ChatColor.GOLD + "/hg join OR /hg host");
-					return true;
-				}
-				else
-				{
-					player.sendMessage(ChatColor.RED + "A game is already in progress!");
-				}
-			}
-			if(args[0].equalsIgnoreCase("host"))
-			{
-				if(currentGame != null)
-				{
-					currentGame.HostGame(player);
-				}
-				else
-				{
-					player.sendMessage(ChatColor.RED + "A game is not going on! Why don't you start one?");
-				}
-			}
-			//command for spectator mode
-			if (args[0].equalsIgnoreCase("s"))
-			{
-				if(currentGame != null)
-				{
-					//TODO: We will need to revamp this once Game.java gets working correctly 
-					for(Player tempPlayer : killedPlayers)
+					if(currentGame != null)
 					{
-						if(tempPlayer == player)
-						{
-							player.setAllowFlight(true);
-							player.setFlying(true);
-							player.sendMessage(ChatColor.AQUA + "You may now fly!");
-							player.sendMessage(ChatColor.AQUA + "You can still take damage though!");
-							return true;
-						}
+						currentGame.PlayerJoin(player);
+						return true;
 					}
-					//if we got here, return so the server doesn't flip
-					player.sendMessage(ChatColor.RED + "You aren't allowed in spectator mode!");
+					else
+					{
+						player.sendMessage(ChatColor.RED + "A game is not going on! Why don't you start one?");
+					}
 				}
-				else
+				if(args[0].equalsIgnoreCase("create"))
 				{
-					player.sendMessage(ChatColor.RED + "You can't spectate a game that is not going on!");
+					if(currentGame == null)
+					{
+						//make a game
+						currentGame = new Game(this);
+						player.sendMessage(ChatColor.GOLD + "You have created a game! You may either join or host!");
+						player.sendMessage(ChatColor.GOLD + "/hg join OR /hg host");
+						return true;
+					}
+					else
+					{
+						player.sendMessage(ChatColor.RED + "A game is already in progress!");
+					}
+				}
+				if(args[0].equalsIgnoreCase("host"))
+				{
+					if(currentGame != null)
+					{
+						currentGame.HostGame(player);
+					}
+					else
+					{
+						player.sendMessage(ChatColor.RED + "A game is not going on! Why don't you start one?");
+					}
+				}
+				//command for spectator mode
+				if (args[0].equalsIgnoreCase("s"))
+				{
+					if(currentGame != null)
+					{
+						//TODO: We will need to revamp this once Game.java gets working correctly 
+						for(Player tempPlayer : killedPlayers)
+						{
+							if(tempPlayer == player)
+							{
+								player.setAllowFlight(true);
+								player.setFlying(true);
+								player.sendMessage(ChatColor.AQUA + "You may now fly!");
+								player.sendMessage(ChatColor.AQUA + "You can still take damage though!");
+								return true;
+							}
+						}
+						//if we got here, return so the server doesn't flip
+						player.sendMessage(ChatColor.RED + "You aren't allowed in spectator mode!");
+					}
+					else
+					{
+						player.sendMessage(ChatColor.RED + "You can't spectate a game that is not going on!");
+					}
 				}
 			}
 		}
@@ -150,13 +153,13 @@ public class HungerGames extends JavaPlugin
 		}
 		this.MakePlayerInvisible();
 		this.AccelerateHunger();
+		if(currentGame != null)
+		{
+			currentGame.ForcePlayersTogether();
+		}
 	}
 	
 	
-	private void ForcePlayersTogether()
-	{
-		
-	}
 	
 	private void AccelerateHunger()
 	{
