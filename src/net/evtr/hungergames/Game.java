@@ -43,6 +43,10 @@ public class Game
 	private int lastPlayerID = 0;
 	private Player mGameHost;
 	
+	public HungerPlayer getPlayer(Player player) {
+		return hungerPlayers.get(player);
+	}
+	
 	//horrible name, I know! please feel free to change it
 	public Game(HungerGames instance)
 	{

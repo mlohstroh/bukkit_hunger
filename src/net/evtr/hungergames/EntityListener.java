@@ -23,6 +23,7 @@ THE SOFTWARE.
 
 package net.evtr.hungergames;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -55,5 +56,10 @@ public class EntityListener implements Listener
 	{
 		plugin.log.info("player died...");
 		plugin.log.info(event.getEntity().getDisplayName() + " has been killed by " + event.getEntity().getKiller().getDisplayName()); //TODO: raises error if not killed by player!
+		Player player = ((Player)event.getEntity());
+		HungerPlayer hPlayer = plugin.currentGame.getPlayer(player);
+		if ( hPlayer != null ) {
+			hPlayer.mIsDied = true;
+		}
 	}
 }

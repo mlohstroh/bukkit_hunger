@@ -30,16 +30,22 @@ import org.bukkit.entity.Player;
 public class HungerPlayer
 {
 	private int mKills;
+	private int mPoints;
 	private String mPlayerName;
 	private Vector<HungerPlayer> mKilledPlayers;
 	private int mGameID;
 	
+	public boolean mIsDied, mIsSponsor;
+	
 	public HungerPlayer(String name, int id)
 	{
 		mKills = 0;
+		mPoints = 0;
 		mPlayerName = name;
 		mKilledPlayers = new Vector<HungerPlayer>();
 		mGameID = id;
+		mIsDied = false;
+		mIsSponsor = false;
 	}
 	
 	public int getPlayerID()

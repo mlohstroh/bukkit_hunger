@@ -45,7 +45,8 @@ public class HungerGames extends JavaPlugin
 	BlockListener blockListener;
 	Logger log = Logger.getLogger("Minecraft");
 	EntityListener entityListener;
-	Game currentGame = null;
+	
+	public Game currentGame = null;
 	
 	public void onEnable()
 	{
@@ -112,7 +113,7 @@ public class HungerGames extends JavaPlugin
 				}
 			}
 			//command for spectator mode
-			if (args[0].equalsIgnoreCase("s"))
+			if (args[0].equalsIgnoreCase("s") || args[0].equalsIgnoreCase("sp"))
 			{
 				if(currentGame != null)
 				{
@@ -134,6 +135,19 @@ public class HungerGames extends JavaPlugin
 				else
 				{
 					player.sendMessage(ChatColor.RED + "You can't spectate a game that is not going on!");
+				}
+			}
+			
+			if ( args[0].equalsIgnoreCase("sp") ) {
+				if ( currentGame != null ) {
+					HungerPlayer hPlayer = currentGame.getPlayer(player);
+					if ( hPlayer.mIsDied ) {
+						hPlayer.mIsSponsor = true;
+						player.sendMessage(ChatColor.GOLD + "You can now give people some MONIES.");
+						//TODO: Make them a proper sponsor.
+					} else {
+						player.sendMessage(ChatColor.RED + "You're not dead yet!");
+					}
 				}
 			}
 		}
