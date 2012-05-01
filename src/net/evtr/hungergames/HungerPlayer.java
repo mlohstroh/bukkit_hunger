@@ -52,4 +52,16 @@ public class HungerPlayer
 	{
 		return mGameID;
 	}
+	
+	public void KilledPlayer(HungerPlayer player)
+	{
+		//ya. they killed someone! MAY THE ODDS BE EVER IN YOUR FAVOR!!
+		mKilledPlayers.add(player);
+		mKills++;
+	}
+
+	public String getPlayerName() 
+	{
+		return mPlayerName;
+	}
 }

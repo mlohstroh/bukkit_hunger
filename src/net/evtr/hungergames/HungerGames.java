@@ -114,47 +114,70 @@ public class HungerGames extends JavaPlugin
 					}
 				}
 				//command for spectator mode
-				if (args[0].equalsIgnoreCase("s") || args[0].equalsIgnoreCase("sp"))
+				if (args[0].equalsIgnoreCase("s")) //|| args[0].equalsIgnoreCase("sp"))
 				{
 					if(currentGame != null)
-
 					{
-						if(currentGame != null)
-						{
-							//TODO: We will need to revamp this once Game.java gets working correctly 
-							for(Player tempPlayer : killedPlayers)
+						if(args[1] != null)
+						{							
+							if(currentGame.getPlayer(player).mIsDied)
 							{
-								if(tempPlayer == player)
+								HungerPlayer hPlayer = currentGame.getHungerPlayerByName(args[1]);
+								if(hPlayer != null)
 								{
-									player.setAllowFlight(true);
-									player.setFlying(true);
-									player.sendMessage(ChatColor.AQUA + "You may now fly!");
-									player.sendMessage(ChatColor.AQUA + "You can still take damage though!");
+									if(hPlayer.mIsDied)
+									{
+										player.sendMessage(ChatColor.RED + "You can't sponser a dead person!");
+										return true;
+									}
+									else
+									{
+										//give them a list of potions they can give
+									}
+								}
+								else
+								{
+									player.sendMessage(ChatColor.RED + args[1] + " doesn't exist in this hunger games!");
+									player.sendMessage(ChatColor.GOLD + "Please try again! Use /hg s to view the people left.");
 									return true;
 								}
-							}
-							//if we got here, return so the server doesn't flip
+								
+								player.setAllowFlight(true);
+								player.setFlying(true);
+								player.sendMessage(ChatColor.AQUA + "You may now fly!");
+								player.sendMessage(ChatColor.AQUA + "You can still take damage though!");
+								return true;
+							}						
 							player.sendMessage(ChatColor.RED + "You aren't allowed in spectator mode!");
 						}
 						else
 						{
-							player.sendMessage(ChatColor.RED + "You can't spectate a game that is not going on!");
+//							for(HungerPlayer hPlayer : currentGame.)
 						}
+					}
+					else
+					{
+						player.sendMessage(ChatColor.RED + "You can't spectate a game that is not going on!");
 					}
 				}
 				
-				if ( args[0].equalsIgnoreCase("sp") ) {
-					if ( currentGame != null ) {
-						HungerPlayer hPlayer = currentGame.getPlayer(player);
-						if ( hPlayer.mIsDied ) {
-							hPlayer.mIsSponsor = true;
-							player.sendMessage(ChatColor.GOLD + "You can now give people some MONIES.");
-							//TODO: Make them a proper sponsor.
-						} else {
-							player.sendMessage(ChatColor.RED + "You're not dead yet!");
-						}
-					}
-				}
+//				if ( args[0].equalsIgnoreCase("sp") ) 
+//				{
+//					if ( currentGame != null ) 
+//					{
+//						HungerPlayer hPlayer = currentGame.getPlayer(player);
+//						if ( hPlayer.mIsDied ) 
+//						{
+//							hPlayer.mIsSponsor = true;
+//							player.sendMessage(ChatColor.GOLD + "You can now give people some MONIES.");
+//							//TODO: Make them a proper sponsor.
+//						}
+//						else 
+//						{
+//							player.sendMessage(ChatColor.RED + "You're not dead yet!");
+//						}
+//					}
+//				}
 			}
 		}
 		

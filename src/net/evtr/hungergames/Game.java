@@ -58,6 +58,27 @@ public class Game
 		LoadPositions();
 	}
 	
+	public HungerPlayer getHungerPlayerByName(String name)
+	{
+		for(HungerPlayer hPlayer : hungerPlayers.values())
+		{
+			if(hPlayer.getPlayerName().equalsIgnoreCase(name))
+			{
+				return hPlayer;
+			}
+		}
+		return null;
+	}
+	
+	public java.util.Vector<HungerPlayer> getAlivePlayers()
+	{
+		java.util.Vector<HungerPlayer> leftPlayers = new java.util.Vector<HungerPlayer>();
+		
+		
+		
+		return leftPlayers;
+	}
+	
 	private void LoadPositions()
 	{
 		//make the data folder

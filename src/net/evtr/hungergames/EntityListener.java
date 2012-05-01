@@ -23,6 +23,7 @@ THE SOFTWARE.
 
 package net.evtr.hungergames;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,24 +43,45 @@ public class EntityListener implements Listener
 	@EventHandler
 	public void CreatureSpawn(CreatureSpawnEvent event)
 	{
+		//throttling the creature spawning
 		event.setCancelled(true);
 	}
 	
 	@EventHandler
 	public void OnPlayerInteract(PlayerInteractEvent event)
 	{
-
+		
 	}
 	
 	@EventHandler
 	public void OnPlayerDeath(PlayerDeathEvent event)
 	{
-		plugin.log.info("player died...");
-		plugin.log.info(event.getEntity().getDisplayName() + " has been killed by " + event.getEntity().getKiller().getDisplayName()); //TODO: raises error if not killed by player!
+		
 		Player player = ((Player)event.getEntity());
-		HungerPlayer hPlayer = plugin.currentGame.getPlayer(player);
-		if ( hPlayer != null ) {
-			hPlayer.mIsDied = true;
+		HungerPlayer killer;
+		if(player.getKiller() != null)
+		{
+			if(plugin.currentGame != null)
+			{
+				killer = plugin.currentGame.getPlayer(player);
+			}
+		}
+
+		if(plugin.currentGame != null)
+		{
+			HungerPlayer hPlayer = plugin.currentGame.getPlayer(player);
+			//simulate the cannon :)
+			plugin.getServer().getWorld("world").setThundering(true);
+			plugin.getServer().getWorld("world").setThunderDuration(10);
+			
+			if (hPlayer != null) 
+			{
+				hPlayer.mIsDied = true;
+				player.sendMessage(ChatColor.GOLD + "You may now become a sponser someone!");
+				player.sendMessage(ChatColor.GOLD + "Type /hg s <playername> to sponser the player of your choice!");
+				//TODO: Print the leftover players here
+				player.sendMessage(ChatColor.GOLD + "You may only sponser one person at a time and your tribute may die!");
+			}
 		}
 	}
 }
