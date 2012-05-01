@@ -58,7 +58,7 @@ public class EntityListener implements Listener
 	{
 		
 		Player player = ((Player)event.getEntity());
-		HungerPlayer killer;
+		HungerPlayer killer = null;
 		if(player.getKiller() != null)
 		{
 			if(plugin.currentGame != null)
@@ -73,14 +73,17 @@ public class EntityListener implements Listener
 			//simulate the cannon :)
 			plugin.getServer().getWorld("world").setThundering(true);
 			plugin.getServer().getWorld("world").setThunderDuration(10);
-			
 			if (hPlayer != null) 
 			{
 				hPlayer.mIsDied = true;
-				player.sendMessage(ChatColor.GOLD + "You may now become a sponser someone!");
+				player.sendMessage(ChatColor.GOLD + "You may now become a sponser for someone!");
 				player.sendMessage(ChatColor.GOLD + "Type /hg s <playername> to sponser the player of your choice!");
 				//TODO: Print the leftover players here
 				player.sendMessage(ChatColor.GOLD + "You may only sponser one person at a time and your tribute may die!");
+				if(killer != null)
+				{
+					killer.KilledPlayer(hPlayer);
+				}
 			}
 		}
 	}

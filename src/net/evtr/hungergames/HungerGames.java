@@ -118,7 +118,7 @@ public class HungerGames extends JavaPlugin
 				{
 					if(currentGame != null)
 					{
-						if(args[1] != null)
+						if(args.length == 2)
 						{							
 							if(currentGame.getPlayer(player).mIsDied)
 							{
@@ -138,21 +138,25 @@ public class HungerGames extends JavaPlugin
 								else
 								{
 									player.sendMessage(ChatColor.RED + args[1] + " doesn't exist in this hunger games!");
-									player.sendMessage(ChatColor.GOLD + "Please try again! Use /hg s to view the people left.");
+									player.sendMessage(ChatColor.RED + "Please try again! Use /hg s to view the people left.");
 									return true;
 								}
 								
 								player.setAllowFlight(true);
 								player.setFlying(true);
-								player.sendMessage(ChatColor.AQUA + "You may now fly!");
-								player.sendMessage(ChatColor.AQUA + "You can still take damage though!");
+								player.sendMessage(ChatColor.GOLD + "You may now fly!");
+								player.sendMessage(ChatColor.GOLD + "You can still take damage though!");
 								return true;
 							}						
 							player.sendMessage(ChatColor.RED + "You aren't allowed in spectator mode!");
 						}
 						else
 						{
-//							for(HungerPlayer hPlayer : currentGame.)
+							//grab the alive players and display them
+							for(HungerPlayer hPlayer : currentGame.getAlivePlayers())
+							{
+								player.sendMessage(ChatColor.GOLD + hPlayer.getPlayerName());
+							}
 						}
 					}
 					else
@@ -193,10 +197,12 @@ public class HungerGames extends JavaPlugin
 		}
 		this.MakePlayerInvisible();
 		this.AccelerateHunger();
-		if(currentGame != null)
-		{
-			currentGame.ForcePlayersTogether();
-		}
+		
+		//TODO: The timer was throwing exceptions
+//		if(currentGame != null)
+//		{
+//			currentGame.ForcePlayersTogether();
+//		}
 	}
 	
 	
