@@ -152,6 +152,12 @@ public class HungerGames extends JavaPlugin
 		this.AccelerateHunger();
 	}
 	
+	
+	private void ForcePlayersTogether()
+	{
+		
+	}
+	
 	private void AccelerateHunger()
 	{
 		Player[] players = getServer().getOnlinePlayers();
