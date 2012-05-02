@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -43,8 +44,11 @@ public class EntityListener implements Listener
 	@EventHandler
 	public void CreatureSpawn(CreatureSpawnEvent event)
 	{
-		//throttling the creature spawning
-		event.setCancelled(true);
+		//throttling the creature spawning to only eggs
+		if(event.getSpawnReason() != SpawnReason.EGG || event.getSpawnReason() != SpawnReason.SPAWNER_EGG)
+		{
+			event.setCancelled(true);
+		}
 	}
 	
 	@EventHandler
