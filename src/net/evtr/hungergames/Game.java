@@ -34,25 +34,24 @@ import java.util.HashMap;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class Game
 {
 	private HashMap<Player, HungerPlayer> hungerPlayers;
+	private HashMap<Player, HungerSponser> hungerSponsers;
 	private HungerGames plugin;
 	private HashMap<Integer, Location> startingPositions;
 	private int lastPlayerID = 0;
 	private Player mGameHost;
-	private int timerSeconds;
+//	private int timerSeconds;
 	
-	public HungerPlayer getPlayer(Player player) {
-		return hungerPlayers.get(player);
-	}
+	
 	
 	//horrible name, I know! please feel free to change it
 	public Game(HungerGames instance)
 	{
 		hungerPlayers = new HashMap<Player, HungerPlayer>();
+		hungerSponsers = new HashMap<Player, HungerSponser>();
 		startingPositions = new HashMap<Integer, Location>();
 		plugin = instance;
 		LoadPositions();
@@ -68,6 +67,16 @@ public class Game
 			}
 		}
 		return null;
+	}
+	
+	public HungerPlayer getPlayer(Player player)
+	{
+		return hungerPlayers.get(player);
+	}
+	
+	public HungerSponser getSponser(Player player)
+	{
+		return hungerSponsers.get(player);
 	}
 	
 	public java.util.Vector<HungerPlayer> getAlivePlayers()
@@ -243,6 +252,10 @@ public class Game
 		player.teleport(startingPositions.get(tempPlayer.getPlayerID()));
 	}
 	
+	public void AddSponser(HungerSponser hPlayer)
+	{
+		hungerSponsers.put(hPlayer.getPlayer(), hPlayer);
+	}
 	
 	//TODO: This was causing problems for the timer... fixme 
 

@@ -31,17 +31,17 @@ public class HungerPlayer
 {
 	private Player mPlayer;
 	private int mKills;
-	private int mPoints;
 	private String mPlayerName;
 	private Vector<HungerPlayer> mKilledPlayers;
 	private int mGameID;
 	
 	public boolean mIsDied, mIsSponsor;
 	
+	public HungerPlayer() { }
+	
 	public HungerPlayer(String name, int id, Player player)
 	{
 		mKills = 0;
-		mPoints = 0;
 		mPlayerName = name;
 		mKilledPlayers = new Vector<HungerPlayer>();
 		mGameID = id;
@@ -69,5 +69,10 @@ public class HungerPlayer
 	public Player getPlayer()
 	{
 		return mPlayer;
+	}
+	
+	public int getKills()
+	{
+		return mKills;
 	}
 }

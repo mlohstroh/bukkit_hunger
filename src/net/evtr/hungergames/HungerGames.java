@@ -36,6 +36,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
@@ -134,12 +135,8 @@ public class HungerGames extends JavaPlugin
 									}
 									else
 									{
-										//give them a list of potions they can give
-										player.sendMessage(ChatColor.GOLD + "You are now sponsering " + hPlayer.getPlayerName());
-										Potion potion = new Potion(PotionType.STRENGTH);
-										//instantly apply the potion
-										potion.apply(hPlayer.getPlayer());
-										hPlayer.getPlayer().sendMessage(ChatColor.GOLD + "You have been sponsered and have been gifted " + potion.toString());
+										//sponser the player and let the class handle all the messaging
+										currentGame.getSponser(player).SponserPlayer(hPlayer);	
 									}
 								}
 								else
@@ -151,8 +148,8 @@ public class HungerGames extends JavaPlugin
 								
 								player.setAllowFlight(true);
 								player.setFlying(true);
-								player.sendMessage(ChatColor.GOLD + "You may now fly!");
-								player.sendMessage(ChatColor.GOLD + "You can still take damage though!");
+								player.sendMessage(ChatColor.GOLD + "You may now fly and spectate game!");
+								player.sendMessage(ChatColor.GOLD + "You can still take damage and experience hunger though!");
 								return true;
 							}						
 							player.sendMessage(ChatColor.RED + "You aren't allowed in spectator mode!");
@@ -171,11 +168,45 @@ public class HungerGames extends JavaPlugin
 						player.sendMessage(ChatColor.RED + "You can't spectate a game that is not going on!");
 					}
 				}
-				if(args[0].equalsIgnoreCase("p"))
+				//this is a testing only function... hence the name "test"
+				if(args[0].equalsIgnoreCase("test"))
 				{
 					Potion potion = new Potion(PotionType.STRENGTH);
-					potion.apply(player);
-					player.sendMessage(ChatColor.GOLD + "You have been sponsered and have been gifted " + potion.toString());
+					ItemStack stack = potion.toItemStack(3);
+					player.getInventory().addItem(stack);
+					player.sendMessage(ChatColor.GOLD + "You have been sponsered and have been gifted " + potion.getType().toString());
+				}
+				if(args[0].equalsIgnoreCase("give"))
+				{
+					if(currentGame.getSponser(player) != null)
+					{
+						if(args.length >= 2)
+						{
+							try
+							{
+								if(currentGame.getSponser(player).getGiftType(Integer.valueOf(args[1])) != null)
+								{
+									//make the potion
+									Potion potion = new Potion(currentGame.getSponser(player).getGiftType(Integer.valueOf(args[1])));
+									//and give it to the player
+									//HUGE function call... sorry
+									currentGame.getSponser(player).getSponseredPlayer().getPlayer().getInventory().addItem(potion.toItemStack(1));
+									//translation, get the sponser's sponsered player and give him the potion
+								}
+								else
+								{
+									player.sendMessage(ChatColor.RED + "Please enter a valid gift index. 1-3");
+								}
+							}
+							catch (NumberFormatException ex)
+							{
+								player.sendMessage(ChatColor.RED + "Please enter a valid number!");
+							}
+							//currentGame.getSponser(player).getGiftType()
+							
+//							hPlayer.getPlayer().sendMessage(ChatColor.GOLD + "You have been sponsered and have been gifted " + potion.toString());
+						}
+					}
 				}
 				
 //				if ( args[0].equalsIgnoreCase("sp") ) 

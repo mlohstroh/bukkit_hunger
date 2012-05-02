@@ -76,6 +76,8 @@ public class EntityListener implements Listener
 			if (hPlayer != null) 
 			{
 				hPlayer.mIsDied = true;
+				//add the player to the sponser list
+				plugin.currentGame.AddSponser((HungerSponser)hPlayer);
 				player.sendMessage(ChatColor.GOLD + "You may now become a sponser for someone!");
 				player.sendMessage(ChatColor.GOLD + "Type /hg s <playername> to sponser the player of your choice!");
 				//TODO: Print the leftover players here
