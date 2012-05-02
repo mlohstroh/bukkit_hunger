@@ -35,7 +35,6 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -145,7 +144,6 @@ public class HungerGames extends JavaPlugin
 									player.sendMessage(ChatColor.RED + args[1] + " doesn't exist in this hunger games!");
 									player.sendMessage(ChatColor.RED + "Please try again! Use /hg s to view the people left.");
 									return true;
-									Monster monster = new Monster();
 								}
 								
 								player.setAllowFlight(true);
@@ -245,10 +243,11 @@ public class HungerGames extends JavaPlugin
 		this.AccelerateHunger();
 		
 		//TODO: The timer was throwing exceptions
-//		if(currentGame != null)
-//		{
+		if(currentGame != null)
+		{
 //			currentGame.ForcePlayersTogether();
-//		}
+			currentGame.CheckForSponsorGifts();
+		}
 	}
 	
 	

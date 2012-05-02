@@ -257,6 +257,14 @@ public class Game
 		hungerSponsers.put(hPlayer.getPlayer(), hPlayer);
 	}
 	
+	public void CheckForSponsorGifts()
+	{
+		for(HungerSponser sponsor : hungerSponsers.values())
+		{
+			sponsor.UpdateSponserTime();
+		}
+	}
+	
 	//TODO: This was causing problems for the timer... fixme 
 
 //	public void ForcePlayersTogether()

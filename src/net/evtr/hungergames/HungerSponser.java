@@ -24,6 +24,7 @@ THE SOFTWARE.
 package net.evtr.hungergames;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.potion.PotionType;
@@ -32,6 +33,8 @@ public class HungerSponser extends HungerPlayer
 {		
 	public HashMap<Integer, PotionType> sponserGifts;
 	private HungerPlayer sponseredPlayer;
+	private int sponserTime;
+	private Random sponsorRandom;
 	
 	public HungerSponser() { }
 	
@@ -41,25 +44,31 @@ public class HungerSponser extends HungerPlayer
 		sponseredPlayer = hPlayer;
 		//load some random gifts
 		this.LoadGifts();
+		sponsorRandom = new Random(System.currentTimeMillis());
 	}
 	
 	public void LoadGifts()
 	{
+		
 		//always clear the hashmap
 		sponserGifts.clear();
 		
-		sponserGifts.put(1, PotionType.SPEED);
-		sponserGifts.put(2, PotionType.STRENGTH);
-		sponserGifts.put(3, PotionType.REGEN);
+		PotionType type1 = PotionType.values()[sponsorRandom.nextInt(PotionType.values().length)];
+		sponserGifts.put(1, type1);
+		
+		PotionType type2 = PotionType.values()[sponsorRandom.nextInt(PotionType.values().length)];
+		sponserGifts.put(2, type2);
+		PotionType type3 = PotionType.values()[sponsorRandom.nextInt(PotionType.values().length)];
+		sponserGifts.put(3, type3);
 		
 		//give them a list of potions they can give
 		this.getPlayer().sendMessage(ChatColor.GOLD + "You are now sponsering " + sponseredPlayer.getPlayerName());
 		this.getPlayer().sendMessage(ChatColor.GOLD + "Choose one gift to give your sponser:");
 		//TODO: Find a way to randomize this
 		
-		this.getPlayer().sendMessage(ChatColor.GOLD + "#1 : Potion of " + PotionType.SPEED.toString());
-		this.getPlayer().sendMessage(ChatColor.GOLD + "#2 : Potion of " + PotionType.STRENGTH.toString());
-		this.getPlayer().sendMessage(ChatColor.GOLD + "#3 : Potion of " + PotionType.REGEN.toString());
+		this.getPlayer().sendMessage(ChatColor.GOLD + "#1 : Potion of " + type1.toString());
+		this.getPlayer().sendMessage(ChatColor.GOLD + "#2 : Potion of " + type2.toString());
+		this.getPlayer().sendMessage(ChatColor.GOLD + "#3 : Potion of " + type3.toString());
 		this.getPlayer().sendMessage(ChatColor.GOLD + "Choose which gift to send by doing /hg give <#>");		
 	}
 	
@@ -70,5 +79,15 @@ public class HungerSponser extends HungerPlayer
 	public HungerPlayer getSponseredPlayer()
 	{
 		return sponseredPlayer;
+	}
+	
+	public void UpdateSponserTime()
+	{
+		sponserTime++;
+		if(sponserTime >= 60)
+		{
+			sponserTime = 0;
+			LoadGifts();
+		}
 	}
 }
