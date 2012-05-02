@@ -233,7 +233,7 @@ public class Game
 			player.sendMessage(ChatColor.RED + "Please wait until match is over!");
 			return;
 		}
-		hungerPlayers.put(player, new HungerPlayer(player.getDisplayName(), lastPlayerID++));
+		hungerPlayers.put(player, new HungerPlayer(player.getDisplayName(), lastPlayerID++, player));
 		
 		plugin.getServer().broadcastMessage(ChatColor.GOLD + player.getDisplayName() + " has just joined the survivial games!");
 		//should work... very confusing

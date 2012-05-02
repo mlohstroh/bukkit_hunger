@@ -37,6 +37,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionType;
 
 public class HungerGames extends JavaPlugin
 {
@@ -133,6 +135,11 @@ public class HungerGames extends JavaPlugin
 									else
 									{
 										//give them a list of potions they can give
+										player.sendMessage(ChatColor.GOLD + "You are now sponsering " + hPlayer.getPlayerName());
+										Potion potion = new Potion(PotionType.STRENGTH);
+										//instantly apply the potion
+										potion.apply(hPlayer.getPlayer());
+										hPlayer.getPlayer().sendMessage(ChatColor.GOLD + "You have been sponsered and have been gifted " + potion.toString());
 									}
 								}
 								else
@@ -163,6 +170,12 @@ public class HungerGames extends JavaPlugin
 					{
 						player.sendMessage(ChatColor.RED + "You can't spectate a game that is not going on!");
 					}
+				}
+				if(args[0].equalsIgnoreCase("p"))
+				{
+					Potion potion = new Potion(PotionType.STRENGTH);
+					potion.apply(player);
+					player.sendMessage(ChatColor.GOLD + "You have been sponsered and have been gifted " + potion.toString());
 				}
 				
 //				if ( args[0].equalsIgnoreCase("sp") ) 

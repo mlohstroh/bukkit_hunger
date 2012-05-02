@@ -29,6 +29,7 @@ import org.bukkit.entity.Player;
 
 public class HungerPlayer
 {
+	private Player mPlayer;
 	private int mKills;
 	private int mPoints;
 	private String mPlayerName;
@@ -37,7 +38,7 @@ public class HungerPlayer
 	
 	public boolean mIsDied, mIsSponsor;
 	
-	public HungerPlayer(String name, int id)
+	public HungerPlayer(String name, int id, Player player)
 	{
 		mKills = 0;
 		mPoints = 0;
@@ -46,6 +47,7 @@ public class HungerPlayer
 		mGameID = id;
 		mIsDied = false;
 		mIsSponsor = false;
+		mPlayer = player;
 	}
 	
 	public int getPlayerID()
@@ -63,5 +65,9 @@ public class HungerPlayer
 	public String getPlayerName() 
 	{
 		return mPlayerName;
+	}
+	public Player getPlayer()
+	{
+		return mPlayer;
 	}
 }
