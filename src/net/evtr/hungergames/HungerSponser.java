@@ -35,6 +35,7 @@ public class HungerSponser extends HungerPlayer
 	private HungerPlayer sponseredPlayer;
 	private int sponserTime;
 	private Random sponsorRandom;
+	private boolean canGift;
 	
 	public HungerSponser(HungerPlayer playerWhoDied) 
 	{
@@ -49,6 +50,7 @@ public class HungerSponser extends HungerPlayer
 	
 	public void SponserPlayer(HungerPlayer hPlayer)
 	{
+		canGift = true;
 		//set the sponsered player
 		sponseredPlayer = hPlayer;
 		//load some random gifts
@@ -91,6 +93,7 @@ public class HungerSponser extends HungerPlayer
 	{
 		return sponserGifts.get(index);
 	}
+	
 	public HungerPlayer getSponseredPlayer()
 	{
 		return sponseredPlayer;
@@ -101,8 +104,19 @@ public class HungerSponser extends HungerPlayer
 		sponserTime++;
 		if(sponserTime >= 60)
 		{
+			canGift = true;
 			sponserTime = 0;
 			LoadGifts();
 		}
+	}
+	
+	public boolean getCanGift()
+	{
+		return canGift;
+	}
+	
+	public void setCanGift(boolean gift)
+	{
+		canGift = gift;
 	}
 }

@@ -186,12 +186,19 @@ public class HungerGames extends JavaPlugin
 							{
 								if(currentGame.getSponser(player).getGiftType(Integer.valueOf(args[1])) != null)
 								{
+									if(!currentGame.getSponser(player).getCanGift())
+									{
+										player.sendMessage(ChatColor.RED + "You cannot give gifts right now. Please wait a minute!");
+										return true;
+									}
 									//make the potion
 									Potion potion = new Potion(currentGame.getSponser(player).getGiftType(Integer.valueOf(args[1])));
 									//and give it to the player
 									//HUGE function call... sorry
 									currentGame.getSponser(player).getSponseredPlayer().getPlayer().getInventory().addItem(potion.toItemStack(1));
-									//translation, get the sponser's sponsered player and give him the potion
+									currentGame.getSponser(player).sponserGifts.clear();
+									//translation, get the sponsers sponsered player and give him the potion
+									currentGame.getSponser(player).setCanGift(true);
 								}
 								else
 								{
@@ -234,19 +241,26 @@ public class HungerGames extends JavaPlugin
 
 	private void handleAllTimerTasks(boolean schedule)
 	{
-		if (schedule)
+		try
 		{
-			//reschedule every second
-			mainTimer.schedule(new HungerTimer(true), 1000);
+			if (schedule)
+			{
+				//reschedule every second
+				mainTimer.schedule(new HungerTimer(true), 1000);
+			}
+			this.MakePlayerInvisible();
+			this.AccelerateHunger();
+			
+			//TODO: The timer was throwing exceptions
+			if(currentGame != null)
+			{
+//				currentGame.ForcePlayersTogether();
+				currentGame.CheckForSponsorGifts();
+			}
 		}
-		this.MakePlayerInvisible();
-		this.AccelerateHunger();
-		
-		//TODO: The timer was throwing exceptions
-		if(currentGame != null)
+		catch (Exception ex)
 		{
-//			currentGame.ForcePlayersTogether();
-			currentGame.CheckForSponsorGifts();
+			mainTimer.schedule(new HungerTimer(true), 1000);
 		}
 	}
 	

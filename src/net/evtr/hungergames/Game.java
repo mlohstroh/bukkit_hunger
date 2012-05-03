@@ -261,7 +261,11 @@ public class Game
 	{
 		for(HungerSponser sponsor : hungerSponsers.values())
 		{
-			sponsor.UpdateSponserTime();
+			//make sure the dude isn't dead
+			if(!sponsor.getSponseredPlayer().mIsDied)
+			{
+				sponsor.UpdateSponserTime();
+			}
 		}
 	}
 	
