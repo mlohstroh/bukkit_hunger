@@ -119,4 +119,11 @@ public class HungerSponser extends HungerPlayer
 	{
 		canGift = gift;
 	}
+	
+	public void SponsoredPlayerDied()
+	{
+		//awwww, too bad
+		this.sponseredPlayer = null;
+		this.getPlayer().sendMessage(ChatColor.GOLD + "Your player died. You choose poorly.");
+	}
 }

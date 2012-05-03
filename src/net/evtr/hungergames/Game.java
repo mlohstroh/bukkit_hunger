@@ -37,6 +37,8 @@ import org.bukkit.entity.Player;
 
 public class Game
 {
+	private java.util.Vector<Player> mPlayersLeft;
+	
 	private HashMap<Player, HungerPlayer> hungerPlayers;
 	private HashMap<Player, HungerSponser> hungerSponsers;
 	private HungerGames plugin;
@@ -79,19 +81,53 @@ public class Game
 		return hungerSponsers.get(player);
 	}
 	
+	public void addPlayerToLeaveList(Player player)
+	{
+		mPlayersLeft.add(player);
+	}
+	
+	public void removePlayerFromLeaveList(Player player)
+	{
+		mPlayersLeft.remove(player);
+	}
+	
+	public HungerSponser getPlayersSponsor(HungerPlayer hPlayer)
+	{
+		for(HungerSponser sponsor : hungerSponsers.values())
+		{
+			if(sponsor.getSponseredPlayer() == hPlayer)
+			{
+				return sponsor;
+			}
+		}
+		return null;
+	}
+	
 	public java.util.Vector<HungerPlayer> getAlivePlayers()
 	{
 		java.util.Vector<HungerPlayer> leftPlayers = new java.util.Vector<HungerPlayer>();
 		
 		for(HungerPlayer hPlayer : hungerPlayers.values())
 		{
-			if (!hPlayer.mIsDied)
+			if (!hPlayer.mIsDied && !IsPlayerLoggedIn(hPlayer.getPlayer()))
 			{
 				leftPlayers.add(hPlayer);
 			}
 		}
 		
 		return leftPlayers;
+	}
+	
+	private boolean IsPlayerLoggedIn(Player player)
+	{
+		for(Player tempPlayer : mPlayersLeft)
+		{
+			if(tempPlayer == player)
+			{
+				return false; 
+			}
+		}
+		return true;
 	}
 	
 	private void LoadPositions()
@@ -262,7 +298,7 @@ public class Game
 		for(HungerSponser sponsor : hungerSponsers.values())
 		{
 			//make sure the dude isn't dead
-			if(!sponsor.getSponseredPlayer().mIsDied)
+			if(sponsor.getSponseredPlayer() != null)
 			{
 				sponsor.UpdateSponserTime();
 			}

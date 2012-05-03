@@ -135,6 +135,8 @@ public class HungerGames extends JavaPlugin
 									{
 										//sponser the player and let the class handle all the messaging
 										currentGame.getSponser(player).SponserPlayer(hPlayer);	
+										hPlayer.getPlayer().sendMessage(ChatColor.GOLD + "You have been sponsered by " + player.getDisplayName());
+										hPlayer.getPlayer().sendMessage(ChatColor.GOLD + "Expect gifts soon!");
 									}
 								}
 								else

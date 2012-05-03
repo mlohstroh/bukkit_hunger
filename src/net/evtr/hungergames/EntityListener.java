@@ -31,6 +31,8 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class EntityListener implements Listener 
 {
@@ -57,6 +59,24 @@ public class EntityListener implements Listener
 		
 	}
 	
+	public void OnPlayerJoin(PlayerJoinEvent event)
+	{
+		if(plugin.currentGame != null)
+		{
+			plugin.currentGame.removePlayerFromLeaveList(event.getPlayer());
+		}
+	}
+	
+	
+	@EventHandler
+	public void OnPlayerLeave(PlayerQuitEvent event)
+	{
+		if(plugin.currentGame != null)
+		{
+			plugin.currentGame.addPlayerToLeaveList(event.getPlayer());
+		}
+	}
+	
 	@EventHandler
 	public void OnPlayerDeath(PlayerDeathEvent event)
 	{
@@ -79,6 +99,10 @@ public class EntityListener implements Listener
 			plugin.getServer().getWorld("world").setThunderDuration(10);
 			if (hPlayer != null) 
 			{
+				if(plugin.currentGame.getPlayersSponsor(hPlayer) != null)
+				{
+					plugin.currentGame.getPlayersSponsor(hPlayer).SponsoredPlayerDied();
+				}
 				hPlayer.mIsDied = true;
 				//add the player to the sponser list
 				plugin.currentGame.AddSponser(new HungerSponser(hPlayer));
