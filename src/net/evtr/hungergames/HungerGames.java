@@ -242,10 +242,9 @@ public class HungerGames extends JavaPlugin
 		this.MakePlayerInvisible();
 		this.AccelerateHunger();
 		
-		//TODO: The timer was throwing exceptions
 		if(currentGame != null)
 		{
-//			currentGame.ForcePlayersTogether();
+			currentGame.ForcePlayersTogether();
 			currentGame.CheckForSponsorGifts();
 		}
 	}

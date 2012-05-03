@@ -33,7 +33,9 @@ import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class Game
 {
@@ -43,7 +45,8 @@ public class Game
 	private HashMap<Integer, Location> startingPositions;
 	private int lastPlayerID = 0;
 	private Player mGameHost;
-//	private int timerSeconds;
+	
+	private long timerSeconds;
 	
 	
 	
@@ -265,53 +268,72 @@ public class Game
 		}
 	}
 	
-	//TODO: This was causing problems for the timer... fixme 
-
-//	public void ForcePlayersTogether()
-//	{
-//		//update the seconds
-//		timerSeconds++;
-//		//after a minute
-//		if(timerSeconds >= 60)
-//		{
-//			Player[] players = (Player[]) this.hungerPlayers.keySet().toArray();
-//			for(Player player : players)
-//			{
-//				Player closestPlayer = this.GetClosestPlayer(player, players);
-//				if(player != closestPlayer)
-//				{
-//					Vector current = player.getLocation().toVector();
-//					Vector otherPlayer = closestPlayer.getLocation().toVector();
-//					Vector newVector = current.subtract(otherPlayer);
-//					newVector = newVector.normalize();
-//				}
-//				else
-//				{
-//					//no close player...
-//					plugin.log.info("No close player was found. Are you the only one left alive??");
-//				}
-//			}
-//		}
-//	}
-//	
-//	private Player GetClosestPlayer(Player player, Player[] allPlayers)
-//	{
-//		double shortestDistance = 1000000000.0;
-//		//for initial purposes
-//		Player playerToReturn = player;
-//		
-//		for(Player tempPlayer : allPlayers)
-//		{
-//			if(tempPlayer != player)
-//			{
-//				double distance = tempPlayer.getLocation().distance(player.getLocation());
-//				if(distance > shortestDistance)
-//				{
-//					shortestDistance = distance;
-//					playerToReturn = tempPlayer;
-//				}
-//			}
-//		}
-//		return playerToReturn;
-//	}
+	public void ForcePlayersTogether()
+	{
+		//update the seconds
+		timerSeconds++;
+		//after a minute
+		if(timerSeconds >= 10)
+		{
+			Object[] objects = this.hungerPlayers.keySet().toArray();
+			Player[] players = new Player[objects.length];
+			for(int i = 0; i < objects.length; i++)
+			{
+				players[i] = (Player)objects[i];
+			}
+			for(Player player : players)
+			{
+				
+				Player closestPlayer = this.GetClosestPlayer(player, players);
+				if(player != closestPlayer)
+				{
+					Vector current = player.getLocation().toVector();
+					Vector otherPlayer = closestPlayer.getLocation().toVector();
+					Vector newVector = otherPlayer.subtract(current);
+					newVector.setZ(0);
+					newVector = newVector.normalize();
+					newVector.multiply(-30);
+					newVector.add(current);
+					
+					newVector.setZ(current.getZ() - 1);
+					
+					Location loc;
+					do {
+						newVector.setZ(newVector.getZ() + 1);
+						loc = new Location(player.getWorld(), newVector.getX(), newVector.getY(), newVector.getZ());
+					} while(loc.getBlock().getType() != Material.AIR );
+					
+					
+					loc.getBlock().setType(Material.FIRE);
+				}
+				else
+				{
+					//no close player...
+					plugin.log.info("No close player was found. Are you the only one left alive??");
+				}
+			}
+			timerSeconds = 0;
+		}
+	}
+	
+	private Player GetClosestPlayer(Player player, Player[] allPlayers)
+	{
+		double shortestDistance = 1000000000.0;
+		//for initial purposes
+		Player playerToReturn = player;
+		
+		for(Player tempPlayer : allPlayers)
+		{
+			if(tempPlayer != player)
+			{
+				double distance = tempPlayer.getLocation().distance(player.getLocation());
+				if(distance < shortestDistance)
+				{
+					shortestDistance = distance;
+					playerToReturn = tempPlayer;
+				}
+			}
+		}
+		return playerToReturn;
+	}
 }
