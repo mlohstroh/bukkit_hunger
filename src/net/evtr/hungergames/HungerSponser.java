@@ -33,7 +33,7 @@ public class HungerSponser extends HungerPlayer
 {		
 	public HashMap<Integer, PotionType> sponserGifts;
 	private HungerPlayer sponseredPlayer;
-	private int sponserTime;
+	private int sponsorTime;
 	private Random sponsorRandom;
 	private boolean canGift;
 	
@@ -67,6 +67,7 @@ public class HungerSponser extends HungerPlayer
 		sponserGifts.put(1, type1);
 		
 		PotionType type2 = PotionType.values()[sponsorRandom.nextInt(PotionType.values().length)];
+		//make sure we don't have dupe potion types
 		while(type1 == type2)
 		{
 			type2 = PotionType.values()[sponsorRandom.nextInt(PotionType.values().length)];
@@ -101,11 +102,11 @@ public class HungerSponser extends HungerPlayer
 	
 	public void UpdateSponserTime()
 	{
-		sponserTime++;
-		if(sponserTime >= 60)
+		sponsorTime++;
+		if(sponsorTime >= 60)
 		{
 			canGift = true;
-			sponserTime = 0;
+			sponsorTime = 0;
 			LoadGifts();
 		}
 	}

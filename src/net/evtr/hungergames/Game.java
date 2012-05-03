@@ -297,7 +297,7 @@ public class Game
 	{
 		for(HungerSponser sponsor : hungerSponsers.values())
 		{
-			//make sure the dude isn't dead
+			//make sure the dude isn't dead aka null
 			if(sponsor.getSponseredPlayer() != null)
 			{
 				sponsor.UpdateSponserTime();

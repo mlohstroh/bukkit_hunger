@@ -80,7 +80,6 @@ public class EntityListener implements Listener
 	@EventHandler
 	public void OnPlayerDeath(PlayerDeathEvent event)
 	{
-		
 		Player player = ((Player)event.getEntity());
 		HungerPlayer killer = null;
 		if(player.getKiller() != null)
@@ -95,21 +94,25 @@ public class EntityListener implements Listener
 		{
 			HungerPlayer hPlayer = plugin.currentGame.getPlayer(player);
 			//simulate the cannon :)
-			plugin.getServer().getWorld("world").setThundering(true);
-			plugin.getServer().getWorld("world").setThunderDuration(10);
+			player.getWorld().setThundering(true);
+			player.getWorld().setThunderDuration(100);
 			if (hPlayer != null) 
 			{
+				//this means he was sponsored
 				if(plugin.currentGame.getPlayersSponsor(hPlayer) != null)
 				{
+					//so lets tell the sponsor that his player died
 					plugin.currentGame.getPlayersSponsor(hPlayer).SponsoredPlayerDied();
 				}
+				// "kill" him
 				hPlayer.mIsDied = true;
-				//add the player to the sponser list
+				//add the player to the sponsor list
 				plugin.currentGame.AddSponser(new HungerSponser(hPlayer));
 				player.sendMessage(ChatColor.GOLD + "You may now become a sponser for someone!");
 				player.sendMessage(ChatColor.GOLD + "Type /hg s <playername> to sponser the player of your choice!");
 				//TODO: Print the leftover players here
 				player.sendMessage(ChatColor.GOLD + "You may only sponser one person at a time and your tribute may die!");
+				//give credit to the killer
 				if(killer != null)
 				{
 					killer.KilledPlayer(hPlayer);

@@ -53,7 +53,6 @@ public class HungerGames extends JavaPlugin
 		entityListener = new EntityListener(this);
 		blockListener = new BlockListener();
 		getServer().getPluginManager().registerEvents(blockListener, this);
-		getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 		getServer().getPluginManager().registerEvents(entityListener, this);
 		killedPlayers = new Vector<Player>();
 		mainTimer = new Timer();
@@ -95,6 +94,7 @@ public class HungerGames extends JavaPlugin
 						//make a game
 						currentGame = new Game(this);
 						player.sendMessage(ChatColor.GOLD + "You have created a game! You may either join or host!");
+						getServer().broadcastMessage(ChatColor.GOLD + "A hunger game has just been created! Type /hg join to join!");
 						player.sendMessage(ChatColor.GOLD + "/hg join OR /hg host");
 						return true;
 					}
@@ -115,7 +115,7 @@ public class HungerGames extends JavaPlugin
 					}
 				}
 				//command for spectator mode
-				if (args[0].equalsIgnoreCase("s")) //|| args[0].equalsIgnoreCase("sp"))
+				if (args[0].equalsIgnoreCase("s")) 
 				{
 					if(currentGame != null)
 					{
@@ -151,8 +151,9 @@ public class HungerGames extends JavaPlugin
 								player.sendMessage(ChatColor.GOLD + "You may now fly and spectate game!");
 								player.sendMessage(ChatColor.GOLD + "You can still take damage and experience hunger though!");
 								return true;
-							}						
-							player.sendMessage(ChatColor.RED + "You aren't allowed in spectator mode!");
+							}		
+							else
+								player.sendMessage(ChatColor.RED + "You aren't allowed in spectator mode!");
 						}
 						else
 						{
@@ -171,12 +172,7 @@ public class HungerGames extends JavaPlugin
 				//this is a testing only function... hence the name "test"
 				if(args[0].equalsIgnoreCase("test"))
 				{
-					if(currentGame != null)
-					{
-						currentGame.AddSponser(new HungerSponser(currentGame.getPlayer(player)));
-						HungerSponser sponser = currentGame.getSponser(player);
-						sponser.LoadGifts();
-					}
+
 				}
 				if(args[0].equalsIgnoreCase("give"))
 				{
@@ -190,17 +186,21 @@ public class HungerGames extends JavaPlugin
 								{
 									if(!currentGame.getSponser(player).getCanGift())
 									{
-										player.sendMessage(ChatColor.RED + "You cannot give gifts right now. Please wait a minute!");
+										player.sendMessage(ChatColor.RED + "You cannot give gifts right now. Please wait at least a minute!");
 										return true;
 									}
 									//make the potion
 									Potion potion = new Potion(currentGame.getSponser(player).getGiftType(Integer.valueOf(args[1])));
+									//cause splash potions are awesome
+									potion.setSplash(true);
 									//and give it to the player
 									//HUGE function call... sorry
 									currentGame.getSponser(player).getSponseredPlayer().getPlayer().getInventory().addItem(potion.toItemStack(1));
 									currentGame.getSponser(player).sponserGifts.clear();
 									//translation, get the sponsers sponsered player and give him the potion
-									currentGame.getSponser(player).setCanGift(true);
+									
+									//then tell the sponsor he can't gift again
+									currentGame.getSponser(player).setCanGift(false);
 								}
 								else
 								{
@@ -214,6 +214,10 @@ public class HungerGames extends JavaPlugin
 							//currentGame.getSponser(player).getGiftType()
 							
 //							hPlayer.getPlayer().sendMessage(ChatColor.GOLD + "You have been sponsered and have been gifted " + potion.toString());
+						}
+						else
+						{
+							player.sendMessage(ChatColor.RED + "Use the give command like /hg give <1-3>");
 						}
 					}
 				}
