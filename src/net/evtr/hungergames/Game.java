@@ -40,7 +40,7 @@ public class Game
 	private java.util.Vector<Player> mPlayersLeft;
 	
 	private HashMap<Player, HungerPlayer> hungerPlayers;
-	private HashMap<Player, HungerSponser> hungerSponsers;
+	private HashMap<Player, HungerSponsor> hungerSponsors;
 	private HungerGames plugin;
 	private HashMap<Integer, Location> startingPositions;
 	private int lastPlayerID = 0;
@@ -53,7 +53,7 @@ public class Game
 	public Game(HungerGames instance)
 	{
 		hungerPlayers = new HashMap<Player, HungerPlayer>();
-		hungerSponsers = new HashMap<Player, HungerSponser>();
+		hungerSponsors = new HashMap<Player, HungerSponsor>();
 		startingPositions = new HashMap<Integer, Location>();
 		plugin = instance;
 		LoadPositions();
@@ -76,9 +76,9 @@ public class Game
 		return hungerPlayers.get(player);
 	}
 	
-	public HungerSponser getSponser(Player player)
+	public HungerSponsor getSponsor(Player player)
 	{
-		return hungerSponsers.get(player);
+		return hungerSponsors.get(player);
 	}
 	
 	public void addPlayerToLeaveList(Player player)
@@ -91,11 +91,11 @@ public class Game
 		mPlayersLeft.remove(player);
 	}
 	
-	public HungerSponser getPlayersSponsor(HungerPlayer hPlayer)
+	public HungerSponsor getPlayersSponsor(HungerPlayer hPlayer)
 	{
-		for(HungerSponser sponsor : hungerSponsers.values())
+		for(HungerSponsor sponsor : hungerSponsors.values())
 		{
-			if(sponsor.getSponseredPlayer() == hPlayer)
+			if(sponsor.getSponsoredPlayer() == hPlayer)
 			{
 				return sponsor;
 			}
@@ -288,19 +288,19 @@ public class Game
 		player.teleport(startingPositions.get(tempPlayer.getPlayerID()));
 	}
 	
-	public void AddSponser(HungerSponser hPlayer)
+	public void AddSponsor(HungerSponsor hPlayer)
 	{
-		hungerSponsers.put(hPlayer.getPlayer(), hPlayer);
+		hungerSponsors.put(hPlayer.getPlayer(), hPlayer);
 	}
 	
 	public void CheckForSponsorGifts()
 	{
-		for(HungerSponser sponsor : hungerSponsers.values())
+		for(HungerSponsor sponsor : hungerSponsors.values())
 		{
 			//make sure the dude isn't dead aka null
-			if(sponsor.getSponseredPlayer() != null)
+			if(sponsor.getSponsoredPlayer() != null)
 			{
-				sponsor.UpdateSponserTime();
+				sponsor.UpdateSponsorTime();
 			}
 		}
 	}

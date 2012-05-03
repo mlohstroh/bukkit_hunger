@@ -29,42 +29,42 @@ import java.util.Random;
 import org.bukkit.ChatColor;
 import org.bukkit.potion.PotionType;
 
-public class HungerSponser extends HungerPlayer
+public class HungerSponsor extends HungerPlayer
 {		
-	public HashMap<Integer, PotionType> sponserGifts;
-	private HungerPlayer sponseredPlayer;
+	public HashMap<Integer, PotionType> sponsorGifts;
+	private HungerPlayer sponsoredPlayer;
 	private int sponsorTime;
 	private Random sponsorRandom;
 	private boolean canGift;
 	
-	public HungerSponser(HungerPlayer playerWhoDied) 
+	public HungerSponsor(HungerPlayer playerWhoDied) 
 	{
 		this.mGameID = playerWhoDied.mGameID;
 		this.mKilledPlayers = playerWhoDied.mKilledPlayers;
 		this.mKills = playerWhoDied.mKills;
 		this.mPlayer = playerWhoDied.mPlayer;
 		this.mPlayerName = playerWhoDied.mPlayerName;
-		sponserGifts = new HashMap<Integer, PotionType>();
+		sponsorGifts = new HashMap<Integer, PotionType>();
 		sponsorRandom = new Random(System.currentTimeMillis());
 	}
 	
-	public void SponserPlayer(HungerPlayer hPlayer)
+	public void SponsorPlayer(HungerPlayer hPlayer)
 	{
 		canGift = true;
-		//set the sponsered player
-		sponseredPlayer = hPlayer;
+		//set the ed player
+		sponsoredPlayer = hPlayer;
 		//load some random gifts
-		sponserGifts = new HashMap<Integer, PotionType>();
+		sponsorGifts = new HashMap<Integer, PotionType>();
 		this.LoadGifts();		
 	}
 	
 	public void LoadGifts()
 	{
 		//always clear the hashmap
-		sponserGifts.clear();
+		sponsorGifts.clear();
 		
 		PotionType type1 = PotionType.values()[sponsorRandom.nextInt(PotionType.values().length)];
-		sponserGifts.put(1, type1);
+		sponsorGifts.put(1, type1);
 		
 		PotionType type2 = PotionType.values()[sponsorRandom.nextInt(PotionType.values().length)];
 		//make sure we don't have dupe potion types
@@ -72,16 +72,16 @@ public class HungerSponser extends HungerPlayer
 		{
 			type2 = PotionType.values()[sponsorRandom.nextInt(PotionType.values().length)];
 		}
-		sponserGifts.put(2, type2);
+		sponsorGifts.put(2, type2);
 		PotionType type3 = PotionType.values()[sponsorRandom.nextInt(PotionType.values().length)];
 		while(type1 == type3 || type2 == type3)
 		{
 			type3 = PotionType.values()[sponsorRandom.nextInt(PotionType.values().length)];
 		}
-		sponserGifts.put(3, type3);
+		sponsorGifts.put(3, type3);
 		
 		//give them a list of potions they can give
-		this.getPlayer().sendMessage(ChatColor.GOLD + "Choose one gift to give your sponser:");
+		this.getPlayer().sendMessage(ChatColor.GOLD + "Choose one gift to give your player:");
 		//TODO: Find a way to randomize this
 		
 		this.getPlayer().sendMessage(ChatColor.GOLD + "#1 : Potion of " + type1.toString());
@@ -92,15 +92,15 @@ public class HungerSponser extends HungerPlayer
 	
 	public PotionType getGiftType(Integer index)
 	{
-		return sponserGifts.get(index);
+		return sponsorGifts.get(index);
 	}
 	
-	public HungerPlayer getSponseredPlayer()
+	public HungerPlayer getSponsoredPlayer()
 	{
-		return sponseredPlayer;
+		return sponsoredPlayer;
 	}
 	
-	public void UpdateSponserTime()
+	public void UpdateSponsorTime()
 	{
 		sponsorTime++;
 		if(sponsorTime >= 60)
@@ -124,7 +124,7 @@ public class HungerSponser extends HungerPlayer
 	public void SponsoredPlayerDied()
 	{
 		//awwww, too bad
-		this.sponseredPlayer = null;
+		this.sponsoredPlayer = null;
 		this.getPlayer().sendMessage(ChatColor.GOLD + "Your player died. You choose poorly.");
 	}
 }

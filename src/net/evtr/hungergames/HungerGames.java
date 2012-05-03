@@ -128,14 +128,14 @@ public class HungerGames extends JavaPlugin
 								{
 									if(hPlayer.mIsDied)
 									{
-										player.sendMessage(ChatColor.RED + "You can't sponser a dead person!");
+										player.sendMessage(ChatColor.RED + "You can't sponsor a dead person!");
 										return true;
 									}
 									else
 									{
-										//sponser the player and let the class handle all the messaging
-										currentGame.getSponser(player).SponserPlayer(hPlayer);	
-										hPlayer.getPlayer().sendMessage(ChatColor.GOLD + "You have been sponsered by " + player.getDisplayName());
+										//sponsor the player and let the class handle all the messaging
+										currentGame.getSponsor(player).SponsorPlayer(hPlayer);	
+										hPlayer.getPlayer().sendMessage(ChatColor.GOLD + "You have been sponsored by " + player.getDisplayName());
 										hPlayer.getPlayer().sendMessage(ChatColor.GOLD + "Expect gifts soon!");
 									}
 								}
@@ -176,31 +176,31 @@ public class HungerGames extends JavaPlugin
 				}
 				if(args[0].equalsIgnoreCase("give"))
 				{
-					if(currentGame.getSponser(player) != null)
+					if(currentGame.getSponsor(player) != null)
 					{
 						if(args.length >= 2)
 						{
 							try
 							{
-								if(currentGame.getSponser(player).getGiftType(Integer.valueOf(args[1])) != null)
+								if(currentGame.getSponsor(player).getGiftType(Integer.valueOf(args[1])) != null)
 								{
-									if(!currentGame.getSponser(player).getCanGift())
+									if(!currentGame.getSponsor(player).getCanGift())
 									{
 										player.sendMessage(ChatColor.RED + "You cannot give gifts right now. Please wait at least a minute!");
 										return true;
 									}
 									//make the potion
-									Potion potion = new Potion(currentGame.getSponser(player).getGiftType(Integer.valueOf(args[1])));
+									Potion potion = new Potion(currentGame.getSponsor(player).getGiftType(Integer.valueOf(args[1])));
 									//cause splash potions are awesome
 									potion.setSplash(true);
 									//and give it to the player
 									//HUGE function call... sorry
-									currentGame.getSponser(player).getSponseredPlayer().getPlayer().getInventory().addItem(potion.toItemStack(1));
-									currentGame.getSponser(player).sponserGifts.clear();
-									//translation, get the sponsers sponsered player and give him the potion
+									currentGame.getSponsor(player).getSponsoredPlayer().getPlayer().getInventory().addItem(potion.toItemStack(1));
+									currentGame.getSponsor(player).sponsorGifts.clear();
+									//translation, get the sponsors sponsored player and give him the potion
 									
 									//then tell the sponsor he can't gift again
-									currentGame.getSponser(player).setCanGift(false);
+									currentGame.getSponsor(player).setCanGift(false);
 								}
 								else
 								{
@@ -211,9 +211,9 @@ public class HungerGames extends JavaPlugin
 							{
 								player.sendMessage(ChatColor.RED + "Please enter a valid number!");
 							}
-							//currentGame.getSponser(player).getGiftType()
+							//currentGame.getsponsor(player).getGiftType()
 							
-//							hPlayer.getPlayer().sendMessage(ChatColor.GOLD + "You have been sponsered and have been gifted " + potion.toString());
+//							hPlayer.getPlayer().sendMessage(ChatColor.GOLD + "You have been sponsored and have been gifted " + potion.toString());
 						}
 						else
 						{
