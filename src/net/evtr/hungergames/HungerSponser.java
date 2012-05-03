@@ -52,13 +52,12 @@ public class HungerSponser extends HungerPlayer
 		//set the sponsered player
 		sponseredPlayer = hPlayer;
 		//load some random gifts
-		this.LoadGifts();		
 		sponserGifts = new HashMap<Integer, PotionType>();
+		this.LoadGifts();		
 	}
 	
 	public void LoadGifts()
 	{
-		
 		//always clear the hashmap
 		sponserGifts.clear();
 		
