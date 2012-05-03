@@ -171,10 +171,12 @@ public class HungerGames extends JavaPlugin
 				//this is a testing only function... hence the name "test"
 				if(args[0].equalsIgnoreCase("test"))
 				{
-					Potion potion = new Potion(PotionType.STRENGTH);
-					ItemStack stack = potion.toItemStack(3);
-					player.getInventory().addItem(stack);
-					player.sendMessage(ChatColor.GOLD + "You have been sponsered and have been gifted " + potion.getType().toString());
+					if(currentGame != null)
+					{
+						currentGame.AddSponser(new HungerSponser(currentGame.getPlayer(player)));
+						HungerSponser sponser = currentGame.getSponser(player);
+						sponser.LoadGifts();
+					}
 				}
 				if(args[0].equalsIgnoreCase("give"))
 				{

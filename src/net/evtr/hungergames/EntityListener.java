@@ -45,7 +45,7 @@ public class EntityListener implements Listener
 	public void CreatureSpawn(CreatureSpawnEvent event)
 	{
 		//throttling the creature spawning to only eggs
-		if(event.getSpawnReason() != SpawnReason.EGG || event.getSpawnReason() != SpawnReason.SPAWNER_EGG)
+		if(event.getSpawnReason() != SpawnReason.SPAWNER_EGG)
 		{
 			event.setCancelled(true);
 		}
@@ -81,7 +81,7 @@ public class EntityListener implements Listener
 			{
 				hPlayer.mIsDied = true;
 				//add the player to the sponser list
-				plugin.currentGame.AddSponser((HungerSponser)hPlayer);
+				plugin.currentGame.AddSponser(new HungerSponser(hPlayer));
 				player.sendMessage(ChatColor.GOLD + "You may now become a sponser for someone!");
 				player.sendMessage(ChatColor.GOLD + "Type /hg s <playername> to sponser the player of your choice!");
 				//TODO: Print the leftover players here

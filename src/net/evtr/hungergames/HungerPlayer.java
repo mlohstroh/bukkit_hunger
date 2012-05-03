@@ -29,11 +29,11 @@ import org.bukkit.entity.Player;
 
 public class HungerPlayer
 {
-	private Player mPlayer;
-	private int mKills;
-	private String mPlayerName;
-	private Vector<HungerPlayer> mKilledPlayers;
-	private int mGameID;
+	protected Player mPlayer;
+	protected int mKills;
+	protected String mPlayerName;
+	protected Vector<HungerPlayer> mKilledPlayers;
+	protected int mGameID;
 	
 	public boolean mIsDied, mIsSponsor;
 	
