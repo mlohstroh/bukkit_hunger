@@ -47,6 +47,7 @@ public class HungerGames extends JavaPlugin
 	Logger log = Logger.getLogger("Minecraft");
 	EntityListener entityListener;
 	public Game currentGame = null;
+	public static org.bukkit.util.Vector hackyTestPos = null;
 	
 	public void onEnable()
 	{
@@ -75,6 +76,19 @@ public class HungerGames extends JavaPlugin
 		{	
 			if(args[0] != null)
 			{
+				if ( args[0].equalsIgnoreCase("testpos") ) {
+					hackyTestPos = player.getLocation().toVector();
+					if ( args.length > 1 ) {
+						if ( args[1].equalsIgnoreCase("off") ) {
+							hackyTestPos = null;
+							sender.sendMessage(ChatColor.YELLOW + "Disabled hacky test post.");
+						}
+					}
+					if ( hackyTestPos != null ) {
+						sender.sendMessage(ChatColor.YELLOW + "Enabled hacky test pos (" + hackyTestPos.getBlockX() + ", " + hackyTestPos.getBlockY() + ", " + hackyTestPos.getBlockZ() + ").");
+					}
+					return true;
+				}
 				if(args[0].equalsIgnoreCase("join"))
 				{
 					if(currentGame != null)
@@ -256,18 +270,20 @@ public class HungerGames extends JavaPlugin
 			}
 			this.MakePlayerInvisible();
 			this.AccelerateHunger();
-			
-			//TODO: The timer was throwing exceptions
-			if(currentGame != null)
-			{
-//				currentGame.ForcePlayersTogether();
-				currentGame.CheckForSponsorGifts();
-			}
+		
+		if(currentGame != null)
+		{
+			currentGame.ForcePlayersTogether();
+			currentGame.CheckForSponsorGifts();
+
 		}
+		}
+
 		catch (Exception ex)
 		{
 			mainTimer.schedule(new HungerTimer(true), 1000);
 		}
+		
 	}
 	
 	
