@@ -60,6 +60,7 @@ public class Game
 		hungerPlayers = new HashMap<Player, HungerPlayer>();
 		hungerSponsors = new HashMap<Player, HungerSponsor>();
 		startingPositions = new HashMap<Integer, Location>();
+		mPlayersLeft = new java.util.Vector<Player>();
 		plugin = instance;
 		LoadPositions();
 	}
@@ -315,6 +316,22 @@ public class Game
 		}
 	}
 	
+	public void soundCannon() {
+		Object[] objects = this.hungerPlayers.keySet().toArray();
+		Player[] players = new Player[objects.length];
+		for(int i = 0; i < objects.length; i++)
+		{
+			players[i] = (Player)objects[i];
+		}
+		for(Player player : players)
+		{
+			Vector pos = player.getLocation().toVector();
+			
+			Location loc = new Location(player.getWorld(), pos.getX(), pos.getY() + 10, pos.getZ());
+			player.getWorld().strikeLightning(loc);
+		}
+	}
+	
 	// targetPos being the position that one is trying to drive the player towards.
 	public void CreateBurnSpot(Player player, Vector playerPos, Vector targetPos, int radius, double burnDistance) {
 		Vector offset = targetPos.subtract(playerPos);
@@ -365,11 +382,6 @@ public class Game
 				if(player != closestPlayer && player.getLocation().toVector().distance(closestPlayer.getLocation().toVector()) > 150)
 				{
 					CreateBurnSpot(player, player.getLocation().toVector(), closestPlayer.getLocation().toVector(), 2, 10);
-				}
-				else
-				{
-					//no close player...
-					plugin.log.info("No close player was found. Are you the only one left alive??");
 				}
 			}
 			timerSeconds = 0;

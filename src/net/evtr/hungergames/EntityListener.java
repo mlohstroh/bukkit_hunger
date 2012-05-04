@@ -76,7 +76,6 @@ public class EntityListener implements Listener
 			plugin.currentGame.addPlayerToLeaveList(event.getPlayer());
 		}
 	}
-	
 	@EventHandler
 	public void OnPlayerDeath(PlayerDeathEvent event)
 	{
@@ -93,9 +92,8 @@ public class EntityListener implements Listener
 		if(plugin.currentGame != null)
 		{
 			HungerPlayer hPlayer = plugin.currentGame.getPlayer(player);
-			//simulate the cannon :)
-			player.getWorld().setThundering(true);
-			player.getWorld().setThunderDuration(100);
+			plugin.currentGame.soundCannon();
+			
 			if (hPlayer != null) 
 			{
 				//this means he was sponsored
@@ -117,7 +115,27 @@ public class EntityListener implements Listener
 				{
 					killer.KilledPlayer(hPlayer);
 				}
+				
+				java.util.Vector<HungerPlayer> livingPlayers = plugin.currentGame.getAlivePlayers();
+				
+				if ( livingPlayers.size() == 1 ) {
+					HungerPlayer hWinner = livingPlayers.get(0);
+					plugin.getServer().broadcastMessage(ChatColor.GOLD + ""
+						+ hWinner.getPlayerName() + " won the Hunger Games with " + hWinner.getKills()
+						+ (hWinner.getKills() == 0 || hWinner.getKills() > 1 ? " kills!" : " kill!"));
+					
+					plugin.currentGame = null; //TODO Add some kind of fancy cleanup to not break everything?
+				} else {
+					plugin.getServer().broadcastMessage(ChatColor.GOLD + ""
+						+ hPlayer.getPlayerName() + " died in the Hunger Games with " + hPlayer.getKills()
+						+ (hPlayer.getKills() == 0 || hPlayer.getKills() > 1 ? " kills!" : " kill!"));
+					
+				}
 			}
+			
+			
+			
+			
 		}
 	}
 }
