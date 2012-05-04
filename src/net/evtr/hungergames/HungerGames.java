@@ -52,7 +52,7 @@ public class HungerGames extends JavaPlugin
 	public void onEnable()
 	{
 		entityListener = new EntityListener(this);
-		blockListener = new BlockListener();
+		blockListener = new BlockListener(this);
 		getServer().getPluginManager().registerEvents(blockListener, this);
 		getServer().getPluginManager().registerEvents(entityListener, this);
 		killedPlayers = new Vector<Player>();

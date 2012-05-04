@@ -23,6 +23,9 @@ THE SOFTWARE.
 
 package net.evtr.hungergames;
 
+import java.util.Vector;
+
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,15 +33,43 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 public class BlockListener implements Listener
 {
+	HungerGames plugin;
+	private Vector<Material> allowedMaterials;
+	
+	public BlockListener(HungerGames instance)
+	{
+		plugin = instance;
+		allowedMaterials = new Vector<Material>();
+		allowedMaterials.add(Material.LEAVES);
+		allowedMaterials.add(Material.GRASS);
+	}
+	
 	@EventHandler
 	public void StopBlockBreaks(BlockBreakEvent event)
 	{
 		Player player = event.getPlayer();
 		//all we care about is his OP status
-		if (!player.isOp())
+		if(plugin.currentGame != null)
 		{
-			event.setCancelled(true);
+			if (!player.isOp())
+			{
+				if(!isMaterialInList(event.getBlock().getType()))
+				{
+					event.setCancelled(true);
+				}
+			}
 		}
-		//if he is op, then he can break blocks
+	}
+	
+	private boolean isMaterialInList(Material material)
+	{
+		for(Material tempMaterial : allowedMaterials)
+		{
+			if(tempMaterial == material)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
