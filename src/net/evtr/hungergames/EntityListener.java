@@ -118,14 +118,17 @@ public class EntityListener implements Listener
 				
 				java.util.Vector<HungerPlayer> livingPlayers = plugin.currentGame.getAlivePlayers();
 				
-				if ( livingPlayers.size() == 1 ) {
+				if ( livingPlayers.size() == 1 ) 
+				{
 					HungerPlayer hWinner = livingPlayers.get(0);
 					plugin.getServer().broadcastMessage(ChatColor.GOLD + ""
 						+ hWinner.getPlayerName() + " won the Hunger Games with " + hWinner.getKills()
 						+ (hWinner.getKills() == 0 || hWinner.getKills() > 1 ? " kills!" : " kill!"));
 					
 					plugin.currentGame = null; //TODO Add some kind of fancy cleanup to not break everything?
-				} else {
+				}
+				else
+				{
 					plugin.getServer().broadcastMessage(ChatColor.GOLD + ""
 						+ hPlayer.getPlayerName() + " died in the Hunger Games with " + hPlayer.getKills()
 						+ (hPlayer.getKills() == 0 || hPlayer.getKills() > 1 ? " kills!" : " kill!"));

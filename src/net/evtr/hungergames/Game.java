@@ -115,7 +115,7 @@ public class Game
 		
 		for(HungerPlayer hPlayer : hungerPlayers.values())
 		{
-			if (!hPlayer.mIsDied && !IsPlayerLoggedIn(hPlayer.getPlayer()))
+			if (!hPlayer.mIsDied && IsPlayerLoggedIn(hPlayer.getPlayer()))
 			{
 				leftPlayers.add(hPlayer);
 			}

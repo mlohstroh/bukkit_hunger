@@ -235,6 +235,17 @@ public class HungerGames extends JavaPlugin
 						}
 					}
 				}
+				if(args[0].equalsIgnoreCase("list"))
+				{
+					if(currentGame != null)
+					{
+						player.sendMessage(ChatColor.GOLD + "Players left alive:");
+						for(HungerPlayer hPlayer : currentGame.getAlivePlayers())
+						{
+							player.sendMessage(ChatColor.GOLD + hPlayer.getPlayerName());
+						}
+					}
+				}
 				
 //				if ( args[0].equalsIgnoreCase("sp") ) 
 //				{
