@@ -290,21 +290,16 @@ public class HungerGames extends JavaPlugin
 	
 	private void AccelerateHunger()
 	{
-		Player[] players = getServer().getOnlinePlayers();
-		for(Player player : players)
+		if(currentGame != null)
 		{
-			if(!IsPlayerDead(player))
+			for(HungerPlayer player : currentGame.getAlivePlayers())
 			{
-				//exhaustion ranges from 0 - 4. when a person moves, he gains exhaustion.
-				//when it hits 4, his hunger goes down a point. hunger ranges from 0-20 like health
-				if(player.getFoodLevel() == 0)
-				{
-					//killing the player quite quickly :) this might need to change...
-					player.setHealth(player.getHealth() - 1);
-				}
-				if(player.getExhaustion() < 3.0f)
-				{
-					player.setExhaustion(3.0f);
+					//exhaustion ranges from 0 - 4. when a person moves, he gains exhaustion.
+					//when it hits 4, his hunger goes down a point. hunger ranges from 0-20 like health
+					if(player.getPlayer().getExhaustion() < 2.0f)
+					{
+						player.getPlayer().setExhaustion(2.0f);
+
 				}
 			}
 		}
@@ -315,34 +310,25 @@ public class HungerGames extends JavaPlugin
 		return getServer().getWorlds().get(0);
 	}
 	
-	private boolean IsPlayerDead(Player player)
-	{
-		for(Player temp : killedPlayers)
-		{
-			if(temp == player)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	private void MakePlayerInvisible()
 	{
-		Player[] players = getServer().getOnlinePlayers();
-		
-		for (Player invisiblePlayer : this.killedPlayers)
+		if(currentGame != null)
 		{
-			for(Player watchingPlayer : players)
+			Player[] players = getServer().getOnlinePlayers();
+			
+			for (HungerSponsor invisiblePlayer : this.currentGame.GetAllSponsors())
 			{
-				if(watchingPlayer != invisiblePlayer)
+				for(Player watchingPlayer : players)
 				{
-					//if they can see them, make them invisible
-					if(watchingPlayer.canSee(invisiblePlayer))
+					if(watchingPlayer != invisiblePlayer.getPlayer())
 					{
-						CraftPlayer p1 = (CraftPlayer)invisiblePlayer;
-						CraftPlayer p2 = (CraftPlayer)watchingPlayer;
-						p2.getHandle().netServerHandler.sendPacket(new Packet29DestroyEntity(p1.getEntityId()));
+						//if they can see them, make them invisible
+						if(watchingPlayer.canSee(invisiblePlayer.getPlayer()))
+						{
+							CraftPlayer p1 = (CraftPlayer)invisiblePlayer.getPlayer();
+							CraftPlayer p2 = (CraftPlayer)watchingPlayer;
+							p2.getHandle().netServerHandler.sendPacket(new Packet29DestroyEntity(p1.getEntityId()));
+						}
 					}
 				}
 			}

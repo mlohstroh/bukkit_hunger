@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -132,6 +133,11 @@ public class Game
 			}
 		}
 		return true;
+	}
+	
+	public Collection<HungerSponsor> GetAllSponsors()
+	{
+		return this.hungerSponsors.values();
 	}
 	
 	private void LoadPositions()
