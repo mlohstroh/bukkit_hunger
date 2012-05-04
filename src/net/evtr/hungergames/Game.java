@@ -30,6 +30,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -268,11 +269,39 @@ public class Game
 		}
 	}
 	
+	// targetPos being the position that one is trying to drive the player towards.
+	public void CreateBurnSpot(Player player, Vector playerPos, Vector targetPos, int radius, double burnDistance) {
+		Vector offset = targetPos.subtract(playerPos);
+		offset.setY(0);
+		
+		offset.normalize();
+		offset.multiply(-burnDistance);
+		
+		Random r = new Random();
+		r.setSeed(System.currentTimeMillis());
+		
+		for ( int x = -radius; x <= radius; x++ ) {
+			for ( int z = -radius; z <= radius; z++ ) {
+				if ( r.nextBoolean() == false ) continue;
+				
+				offset.setY(-6);
+				
+				Location loc;
+				do {
+					offset.setY(offset.getY() + 1);
+					loc = new Location(player.getWorld(), playerPos.getX() + offset.getX() + x, playerPos.getY() + offset.getY(), playerPos.getZ() + offset.getZ() + z);
+				} while(loc.getBlock().getType() != Material.AIR );
+				
+				loc.getBlock().setType(Material.FIRE);
+			}
+		}
+		
+	}
+	
 	public void ForcePlayersTogether()
 	{
 		//update the seconds
 		timerSeconds++;
-		//after a minute
 		if(timerSeconds >= 10)
 		{
 			Object[] objects = this.hungerPlayers.keySet().toArray();
@@ -283,28 +312,13 @@ public class Game
 			}
 			for(Player player : players)
 			{
-				
+				if ( HungerGames.hackyTestPos != null ) {
+					CreateBurnSpot(player, player.getLocation().toVector(), HungerGames.hackyTestPos, 1, 20);
+				}
 				Player closestPlayer = this.GetClosestPlayer(player, players);
 				if(player != closestPlayer)
 				{
-					Vector current = player.getLocation().toVector();
-					Vector otherPlayer = closestPlayer.getLocation().toVector();
-					Vector newVector = otherPlayer.subtract(current);
-					newVector.setZ(0);
-					newVector = newVector.normalize();
-					newVector.multiply(-30);
-					newVector.add(current);
-					
-					newVector.setZ(current.getZ() - 1);
-					
-					Location loc;
-					do {
-						newVector.setZ(newVector.getZ() + 1);
-						loc = new Location(player.getWorld(), newVector.getX(), newVector.getY(), newVector.getZ());
-					} while(loc.getBlock().getType() != Material.AIR );
-					
-					
-					loc.getBlock().setType(Material.FIRE);
+					CreateBurnSpot(player, player.getLocation().toVector(), closestPlayer.getLocation().toVector(), 1, 20);
 				}
 				else
 				{
