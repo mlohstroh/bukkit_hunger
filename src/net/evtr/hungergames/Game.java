@@ -260,14 +260,19 @@ public class Game
 		}
 		else
 		{
-			mGameHost = player;
-			
-			//TODO: Setup permissions so not everyone can be a host
-			player.teleport(new Location(plugin.getDefaultWorld(), -1573.5, 67.0, -642.5));	//TODO: Find a way to somehow not hard code that vector
-			player.setAllowFlight(true);
-			player.setFlying(true);
-			player.sendMessage(ChatColor.GOLD + "You may now fly!");
-			player.sendMessage(ChatColor.GOLD + "You can still take damage though!");
+			if(player.isOp())
+			{
+				mGameHost = player;
+				player.teleport(new Location(plugin.getDefaultWorld(), -1573.5, 67.0, -642.5));	
+				player.setAllowFlight(true);
+				player.setFlying(true);
+				player.sendMessage(ChatColor.GOLD + "You may now fly!");
+				player.sendMessage(ChatColor.GOLD + "You can still take damage though!");
+			}
+			else
+			{
+				player.sendMessage(ChatColor.RED + "You cannot host if you are not an OP");
+			}
 		}
 	}
 	

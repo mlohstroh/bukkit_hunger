@@ -49,7 +49,15 @@ public class EntityListener implements Listener
 		//throttling the creature spawning to only eggs
 		if(event.getSpawnReason() != SpawnReason.SPAWNER_EGG)
 		{
-			event.setCancelled(true);
+			//yes, horrible way... but i forgot the other way
+			if(event.getSpawnReason() != SpawnReason.CUSTOM)
+			{
+				event.setCancelled(true);
+			}
+			else
+			{
+				event.setCancelled(false);
+			}
 		}
 	}
 	

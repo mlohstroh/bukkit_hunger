@@ -31,10 +31,12 @@ import java.util.logging.Logger;
 import net.minecraft.server.Packet29DestroyEntity;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.Potion;
@@ -243,6 +245,37 @@ public class HungerGames extends JavaPlugin
 						for(HungerPlayer hPlayer : currentGame.getAlivePlayers())
 						{
 							player.sendMessage(ChatColor.GOLD + hPlayer.getPlayerName());
+						}
+					}
+				}
+				//host commands :)
+				if(args[0].equalsIgnoreCase("h"))
+				{
+					if(currentGame != null)
+					{
+						if(args.length == 2)
+						{
+							//TODO: for some reason, this won't work... :(
+							if(args[1].equalsIgnoreCase("m"))
+							{
+								for(HungerPlayer hPlayer : currentGame.getAlivePlayers())
+								{
+									Location loc;
+									org.bukkit.util.Vector playerVec = hPlayer.getPlayer().getLocation().toVector();
+									playerVec = playerVec.normalize();
+									playerVec.setX(playerVec.getX() + 10);
+									loc = new Location(player.getWorld(), playerVec.getX(), playerVec.getY(), playerVec.getZ());
+									hPlayer.getPlayer().getWorld().spawnCreature(loc, EntityType.ZOMBIE);
+									playerVec.setX(playerVec.getX() - 20);
+									loc = new Location(player.getWorld(), playerVec.getX(), playerVec.getY(), playerVec.getZ());
+									hPlayer.getPlayer().getWorld().spawnCreature(loc, EntityType.ZOMBIE);
+									playerVec.setX(playerVec.getX() + 10);
+									playerVec.setZ(playerVec.getZ() + 10);
+									hPlayer.getPlayer().getWorld().spawnCreature(loc, EntityType.ZOMBIE);
+									playerVec.setZ(playerVec.getZ() - 20);
+									hPlayer.getPlayer().getWorld().spawnCreature(loc, EntityType.ZOMBIE);
+								}
+							}
 						}
 					}
 				}
