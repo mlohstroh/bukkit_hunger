@@ -342,7 +342,7 @@ public class Game
 	{
 		//update the seconds
 		timerSeconds++;
-		if(timerSeconds >= 10)
+		if(timerSeconds >= 30)
 		{
 			Object[] objects = this.hungerPlayers.keySet().toArray();
 			Player[] players = new Player[objects.length];
@@ -353,12 +353,12 @@ public class Game
 			for(Player player : players)
 			{
 				if ( HungerGames.hackyTestPos != null ) {
-					CreateBurnSpot(player, player.getLocation().toVector(), HungerGames.hackyTestPos, 1, 20);
+					CreateBurnSpot(player, player.getLocation().toVector(), HungerGames.hackyTestPos, 2, 10);
 				}
 				Player closestPlayer = this.GetClosestPlayer(player, players);
-				if(player != closestPlayer)
+				if(player != closestPlayer && player.getLocation().toVector().distance(closestPlayer.getLocation().toVector()) > 150)
 				{
-					CreateBurnSpot(player, player.getLocation().toVector(), closestPlayer.getLocation().toVector(), 1, 20);
+					CreateBurnSpot(player, player.getLocation().toVector(), closestPlayer.getLocation().toVector(), 2, 10);
 				}
 				else
 				{
