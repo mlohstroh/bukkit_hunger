@@ -26,10 +26,13 @@ package net.evtr.hungergames;
 import java.util.Vector;
 
 import org.bukkit.Material;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class BlockListener implements Listener
 {
@@ -58,6 +61,16 @@ public class BlockListener implements Listener
 					event.setCancelled(true);
 				}
 			}
+		}
+	}
+	
+	@EventHandler
+	public void playerOpensChest(PlayerInteractEvent event) {
+		if ( event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.CHEST) {
+			Chest chest = (Chest)event.getClickedBlock().getState();
+			
+			chest.getInventory().clear(); // BAHAHAHAHA!
+			
 		}
 	}
 	
