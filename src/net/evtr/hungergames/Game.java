@@ -55,7 +55,6 @@ public class Game
 	public InventoryManager inventory;
 	
 	
-	
 	//horrible name, I know! please feel free to change it
 	public Game(HungerGames instance)
 	{
@@ -67,6 +66,16 @@ public class Game
 		LoadPositions();
 		
 		inventory = new InventoryManager();
+		addTemplates();
+	}
+	
+	public void addTemplates() {
+		inventory.addNewTemplate(new Material[] { Material.BREAD, Material.COOKED_FISH, Material.APPLE }, 50 );
+		inventory.addNewTemplate(new Material[] { Material.COOKED_CHICKEN }, 100);
+		inventory.addNewTemplate(new Material[] { Material.STONE_SWORD, Material.COOKED_FISH }, 50 );
+		inventory.addNewTemplate(new Material[] { Material.COOKED_CHICKEN, Material.COOKED_CHICKEN, Material.APPLE, Material.BREAD, Material.BREAD }, 25 );
+		inventory.addNewTemplate(new Material[] { Material.STONE_SWORD, Material.IRON_CHESTPLATE, Material.COOKED_BEEF }, 25);
+		inventory.addNewTemplate(new Material[] { Material.BOW, Material.ARROW, Material.ARROW, Material.ARROW, Material.ARROW, Material.ARROW, Material.COOKED_CHICKEN }, 25);
 	}
 	
 	public HungerPlayer getHungerPlayerByName(String name)

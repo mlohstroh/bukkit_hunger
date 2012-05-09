@@ -70,8 +70,11 @@ public class BlockListener implements Listener
 		if ( event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.CHEST) {
 			Chest chest = (Chest)event.getClickedBlock().getState();
 			
-			event.setCancelled(true);
-			event.getPlayer().openInventory(plugin.currentGame.inventory.getInventory(event.getPlayer(), chest));
+			HungerPlayer player = plugin.currentGame.getPlayer(event.getPlayer());
+			if ( player != null ) {
+				player.getPlayer().openInventory(plugin.currentGame.inventory.getInventory(player, chest));
+				event.setCancelled(true);
+			}
 		}
 	}
 	

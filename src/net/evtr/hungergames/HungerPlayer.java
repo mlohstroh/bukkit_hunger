@@ -37,6 +37,8 @@ public class HungerPlayer
 	
 	public boolean mIsDied, mIsSponsor;
 	
+	public int mLastTemplateID;
+	
 	public HungerPlayer() { }
 	
 	public HungerPlayer(String name, int id, Player player)
@@ -48,6 +50,7 @@ public class HungerPlayer
 		mIsDied = false;
 		mIsSponsor = false;
 		mPlayer = player;
+		mLastTemplateID = 0;
 	}
 	
 	public int getPlayerID()
