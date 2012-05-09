@@ -52,6 +52,8 @@ public class Game
 	
 	private long timerSeconds;
 	
+	public InventoryManager inventory;
+	
 	
 	
 	//horrible name, I know! please feel free to change it
@@ -63,6 +65,8 @@ public class Game
 		mPlayersLeft = new java.util.Vector<Player>();
 		plugin = instance;
 		LoadPositions();
+		
+		inventory = new InventoryManager();
 	}
 	
 	public HungerPlayer getHungerPlayerByName(String name)
