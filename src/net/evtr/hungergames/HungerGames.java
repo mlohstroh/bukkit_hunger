@@ -96,6 +96,7 @@ public class HungerGames extends JavaPlugin
 					if(currentGame != null)
 					{
 						currentGame.PlayerJoin(player);
+						player.getInventory().clear();
 						return true;
 					}
 					else
