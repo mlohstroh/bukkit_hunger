@@ -14,31 +14,19 @@ import org.bukkit.inventory.ItemStack;
 
 public class InventoryManager {
 	public Random random;
-	
-	private static class InventoryTemplate {
-		public static int nextID = 1;
-		public int chance; // 0 to 100. Not definite.
-		public Vector<ItemStack> items;
-		public int id;
-		
-		public InventoryTemplate(ItemStack[] items, int chance) {
-			this.items = new Vector<ItemStack>();
-			this.chance = chance;
-			for ( int i = 0; i < Math.min(items.length, 27); i++ ) {
-				this.items.add(items[i]);
-			}
-			id = ++nextID;
-		}
-	}
-	
-	public class VirtualChest {
+
+	public class VirtualChest 
+	{
 		public Chest chest;
 		
-		public class Element {
+		public class Element 
+		{
+			
 			public Inventory inventory;
 			public HungerPlayer player;
 			
-			public Element(HungerPlayer player, Inventory inventory) {
+			public Element(HungerPlayer player, Inventory inventory) 
+			{
 				this.player = player;
 				this.inventory = inventory;
 			}
@@ -46,9 +34,12 @@ public class InventoryManager {
 		
 		public Vector<Element> playerChests;
 		
-		public Inventory getInventory(HungerPlayer player) {
-			for ( int i = 0; i < playerChests.size(); i++ ) {
-				if ( playerChests.get(i).player == player ) {
+		public Inventory getInventory(HungerPlayer player)
+		{
+			for ( int i = 0; i < playerChests.size(); i++ ) 
+			{
+				if ( playerChests.get(i).player == player ) 
+				{
 					return playerChests.get(i).inventory;
 				}
 			}
@@ -58,7 +49,8 @@ public class InventoryManager {
 			return ele.inventory;
 		}
 		
-		public VirtualChest(Chest chest) {
+		public VirtualChest(Chest chest) 
+		{
 			this.chest = chest;
 			playerChests = new Vector<Element>();
 		}
@@ -83,20 +75,25 @@ public class InventoryManager {
 		return newChest;
 	}
 	
-	
-	
 	private Vector<InventoryTemplate> templates;
 	
-	public void addNewTemplate(ItemStack[] items, int chance) {
-		templates.add(new InventoryTemplate(items, chance));
+	public void addNewTemplate(InventoryTemplate template)
+	{
+		templates.add(template);
 	}
 	
-	public void addNewTemplate(Material[] items, int chance) {
+	public void addNewTemplate(ItemStack[] items, int chance, int max) 
+	{
+		templates.add(new InventoryTemplate(items, chance, max));
+	}
+	
+	public void addNewTemplate(Material[] items, int chance, int max) 
+	{
 		ItemStack[] stacks = new ItemStack[items.length];
 		for ( int i = 0; i < items.length; i++ ) {
 			stacks[i] = new ItemStack(items[i], 1);
 		}
-		addNewTemplate(stacks, chance);
+		addNewTemplate(stacks, chance, max);
 	}
 	
 	private Inventory newInventory(InventoryHolder holder, Vector<ItemStack> items) {
@@ -115,28 +112,47 @@ public class InventoryManager {
 		return inventory;
 	}
 	
-	public Inventory randomInventory(InventoryHolder holder, HungerPlayer player) {
-		int n = random.nextInt(100);
-		Vector<InventoryTemplate> qualified = new Vector<InventoryTemplate>();
-		for ( int i = 0; i < templates.size(); i++ ) {
+	public Inventory randomInventory(InventoryHolder holder, HungerPlayer player)
+	{
+		Inventory invToReturn = Bukkit.createInventory(holder, InventoryType.CHEST);
+
+		for (int i = 0; i < templates.size(); i++)
+		{
+			int currentItems = 0;
+			int n = random.nextInt(100);
+			
 			InventoryTemplate t = templates.get(i);
-			if ( t.chance > n ) {
-				qualified.add(t);
+			
+			for(int j = 0; j < t.items.size(); j++)
+			{
+				if (t.chance > n && (currentItems + 1) <= t.maxItems) 
+				{
+					invToReturn.addItem(t.items.get(j));
+					currentItems++;
+				}
 			}
+			
 		}
 		
-		if ( qualified.size() > 0 ) {
-			InventoryTemplate selected;
-			do {
-				selected = qualified.remove(random.nextInt(qualified.size()));
-			} while ( selected.id == player.mLastTemplateID && qualified.size() > 0 );
-			
-			player.mLastTemplateID = selected.id;
-			
-			return newInventory(holder, selected.items);
-		} else {
-			return newInventory(holder, new Vector<ItemStack>());
-		}
+		return invToReturn;
+		
+//		if ( qualified.size() > 0 ) 
+//		{
+//			InventoryTemplate selected;
+//			do
+//			{
+//				selected = qualified.remove(random.nextInt(qualified.size()));	
+//			}
+//			while ( selected.id == player.mLastTemplateID && qualified.size() > 0 );
+//			
+//			player.mLastTemplateID = selected.id;
+//			
+//			return newInventory(holder, selected.items);
+//		} 
+//		else 
+//		{
+//			return newInventory(holder, new Vector<ItemStack>());
+//		}
 				
 	}
 	

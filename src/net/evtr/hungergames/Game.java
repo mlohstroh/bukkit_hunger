@@ -37,6 +37,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 public class Game
@@ -69,13 +70,65 @@ public class Game
 		addTemplates();
 	}
 	
-	public void addTemplates() {
-		inventory.addNewTemplate(new Material[] { Material.BREAD, Material.COOKED_FISH, Material.APPLE }, 50 );
-		inventory.addNewTemplate(new Material[] { Material.COOKED_CHICKEN }, 100);
-		inventory.addNewTemplate(new Material[] { Material.STONE_SWORD, Material.COOKED_FISH }, 50 );
-		inventory.addNewTemplate(new Material[] { Material.COOKED_CHICKEN, Material.COOKED_CHICKEN, Material.APPLE, Material.BREAD, Material.BREAD }, 25 );
-		inventory.addNewTemplate(new Material[] { Material.STONE_SWORD, Material.IRON_CHESTPLATE, Material.COOKED_BEEF }, 25);
-		inventory.addNewTemplate(new Material[] { Material.BOW, Material.ARROW, Material.ARROW, Material.ARROW, Material.ARROW, Material.ARROW, Material.COOKED_CHICKEN }, 25);
+	public void addTemplates() 
+	{	
+		File items = new File(plugin.getDataFolder() + File.separator + "items.txt");
+		
+		if(!items.exists())
+		{
+			try 
+			{
+				//TODO: These should be changable
+				BufferedWriter writer = new BufferedWriter(new FileWriter(items));
+				//write default positions
+				writer.write("#file format look like [max items from this list]:[chance]:[id number,stack]:[id number,stack]... etc");
+				writer.close();
+			}
+			catch(Exception ex)
+			{
+				
+			}
+		}
+		
+		try 
+		{
+			BufferedReader reader = new BufferedReader(new FileReader(items));
+			
+			String line = null;
+			
+			while((line = reader.readLine()) != null)
+			{
+				if (!line.equalsIgnoreCase("") && !line.startsWith("#"))
+				{
+					plugin.log.info(line); //debug purposes
+					String[] lines = line.split(":");
+					
+					InventoryTemplate template = new InventoryTemplate();
+					template.maxItems = Integer.valueOf(lines[0]);
+					template.chance = Integer.valueOf(lines[1]);
+					for(int i = 2; i < lines.length - 2; i++)
+					{
+						String[] stringItems = lines[i].split(",");
+						ItemStack stack = new ItemStack(Material.getMaterial(Integer.valueOf(stringItems[0])), Integer.valueOf(stringItems[1]));
+						template.items.add(stack);
+					}
+					inventory.addNewTemplate(template);
+				}
+			}
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+//		inventory.addNewTemplate(new Material[] { Material.BREAD, Material.COOKED_FISH, Material.APPLE }, 50 );
+//		inventory.addNewTemplate(new Material[] { Material.COOKED_CHICKEN }, 100);
+//		inventory.addNewTemplate(new Material[] { Material.STONE_SWORD, Material.COOKED_FISH }, 50 );
+//		inventory.addNewTemplate(new Material[] { Material.COOKED_CHICKEN, Material.COOKED_CHICKEN, Material.APPLE, Material.BREAD, Material.BREAD }, 25 );
+//		inventory.addNewTemplate(new Material[] { Material.STONE_SWORD, Material.IRON_CHESTPLATE, Material.COOKED_BEEF }, 25);
+//		inventory.addNewTemplate(new Material[] { Material.BOW, Material.ARROW, Material.ARROW, Material.ARROW, Material.ARROW, Material.ARROW, Material.COOKED_CHICKEN }, 25);
+//		inventory.addNewTemplate(new Material[] { Material.LEATHER_CHESTPLATE}, 50);
+//		inventory.addNewTemplate(new Material[] { Material.LEATHER_HELMET}, 75);
 	}
 	
 	public HungerPlayer getHungerPlayerByName(String name)
