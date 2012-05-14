@@ -74,7 +74,6 @@ public class BlockListener implements Listener
 			HungerPlayer player = plugin.currentGame.getPlayer(event.getPlayer());
 			if ( player != null )
 			{
-				plugin.log.info("opening chest!!");
 				player.getPlayer().openInventory(plugin.currentGame.inventory.getInventory(player, chest));
 				event.setCancelled(true);
 			}

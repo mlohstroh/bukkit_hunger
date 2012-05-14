@@ -81,7 +81,7 @@ public class Game
 				//TODO: These should be changable
 				BufferedWriter writer = new BufferedWriter(new FileWriter(items));
 				//write default positions
-				writer.write("#file format look like [max items from this list]:[chance]:[id number,stack]:[id number,stack]... etc");
+				writer.write("#file format look like [chance]:[id number,stack]:[id number,stack]... etc");
 				writer.close();
 			}
 			catch(Exception ex)
@@ -104,9 +104,8 @@ public class Game
 					String[] lines = line.split(":");
 					
 					InventoryTemplate template = new InventoryTemplate();
-					template.maxItems = Integer.valueOf(lines[0]);
-					template.chance = Integer.valueOf(lines[1]);
-					for(int i = 2; i < lines.length - 2; i++)
+					template.chance = Integer.valueOf(lines[0]);
+					for(int i = 1; i < lines.length - 1; i++)
 					{
 						String[] stringItems = lines[i].split(",");
 						ItemStack stack = new ItemStack(Material.getMaterial(Integer.valueOf(stringItems[0])), Integer.valueOf(stringItems[1]));

@@ -112,26 +112,40 @@ public class InventoryManager {
 		return inventory;
 	}
 	
+	private InventoryTemplate getClosestTemplate(int startingPoint)
+	{
+		int lastTemplateLength = 101;
+		//grab the first so we never return null
+		InventoryTemplate templateToReturn = templates.get(0);
+		for(int i = 0; i < templates.size(); i++)
+		{
+			//in case we get an exact match
+			if(templates.get(i).chance == startingPoint)
+			{
+				return templates.get(i);
+			}
+			
+			int currentTemplateLength = Math.max(startingPoint, templates.get(i).chance) - Math.min(startingPoint, templates.get(i).chance);
+			
+			if(currentTemplateLength <= lastTemplateLength) 
+			{
+				lastTemplateLength = currentTemplateLength;
+				templateToReturn = templates.get(i);
+			}
+		}
+		return templateToReturn;
+	}
+	
 	public Inventory randomInventory(InventoryHolder holder, HungerPlayer player)
 	{
 		Inventory invToReturn = Bukkit.createInventory(holder, InventoryType.CHEST);
 
-		for (int i = 0; i < templates.size(); i++)
+		//grab a random template
+		InventoryTemplate template = getClosestTemplate(random.nextInt(100)); 
+		
+		for (int i = 0; i < template.items.size(); i++)
 		{
-			int currentItems = 0;
-			int n = random.nextInt(100);
-			
-			InventoryTemplate t = templates.get(i);
-			
-			for(int j = 0; j < t.items.size(); j++)
-			{
-				if (t.chance > n && (currentItems + 1) <= t.maxItems) 
-				{
-					invToReturn.addItem(t.items.get(j));
-					currentItems++;
-				}
-			}
-			
+			invToReturn.addItem(template.items.get(i));
 		}
 		
 		return invToReturn;
@@ -152,8 +166,7 @@ public class InventoryManager {
 //		else 
 //		{
 //			return newInventory(holder, new Vector<ItemStack>());
-//		}
-				
+//		}			
 	}
 	
 	public InventoryManager() {
