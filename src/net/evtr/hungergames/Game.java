@@ -104,7 +104,7 @@ public class Game
 					String[] lines = line.split(":");
 					
 					InventoryTemplate template = new InventoryTemplate();
-					template.chance = Integer.valueOf(lines[0]);
+					template.minRange = Integer.valueOf(lines[0]);
 					for(int i = 1; i < lines.length - 1; i++)
 					{
 						String[] stringItems = lines[i].split(",");
