@@ -47,7 +47,9 @@ public class BlockListener implements Listener
 		plugin = instance;
 		allowedMaterials = new Vector<Material>();
 		allowedMaterials.add(Material.LEAVES);
-		allowedMaterials.add(Material.GRASS);
+		allowedMaterials.add(Material.LONG_GRASS);
+		allowedMaterials.add(Material.YELLOW_FLOWER);
+		allowedMaterials.add(Material.RED_ROSE);
 	}
 	
 	@EventHandler
