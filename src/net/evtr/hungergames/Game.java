@@ -36,6 +36,8 @@ import java.util.Random;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -54,6 +56,42 @@ public class Game
 	private long timerSeconds;
 	
 	public InventoryManager inventory;
+	public World world;
+	
+	private static class BlockInfo
+	{
+		public int x, y, z;
+		byte meta;
+		public Material type;
+		
+		public BlockInfo(int x, int y, int z, Material type, byte meta)
+		{
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			this.type = type;
+			this.meta = meta;
+		}
+	}
+	
+	private java.util.Vector<BlockInfo> changedBlocks;
+	
+	public void logBlock(int x, int y, int z, Material type, byte meta)
+	{
+		changedBlocks.add(new BlockInfo(x, y, z, type, meta));
+	}
+	
+	public void revertBlockChanges()
+	{
+		for ( int i = 0; i < changedBlocks.size(); i++ )
+		{
+			BlockInfo info = changedBlocks.get(i);
+			Block b = world.getBlockAt(info.x, info.y, info.z);
+			b.setType(info.type);
+			b.setData(info.meta);
+		}
+		changedBlocks.clear();
+	}
 	
 	
 	//horrible name, I know! please feel free to change it
@@ -68,6 +106,9 @@ public class Game
 		
 		inventory = new InventoryManager();
 		addTemplates();
+		
+		changedBlocks = new java.util.Vector<BlockInfo>();
+		world = plugin.getDefaultWorld();
 	}
 	
 	public void addTemplates() 

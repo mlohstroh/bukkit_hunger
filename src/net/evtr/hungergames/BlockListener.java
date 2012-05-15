@@ -32,6 +32,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class BlockListener implements Listener
@@ -44,7 +47,26 @@ public class BlockListener implements Listener
 		plugin = instance;
 		allowedMaterials = new Vector<Material>();
 		allowedMaterials.add(Material.LEAVES);
-		allowedMaterials.add(Material.GRASS);
+		allowedMaterials.add(Material.LONG_GRASS);
+		allowedMaterials.add(Material.YELLOW_FLOWER);
+		allowedMaterials.add(Material.RED_ROSE);
+	}
+	
+	@EventHandler
+	public void LogBurnDestruction(BlockBurnEvent event)
+	{
+		plugin.currentGame.logBlock(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ(), event.getBlock().getType(), event.getBlock().getData());
+	}
+	
+	@EventHandler
+	public void LogPhysicsDestruction(BlockPhysicsEvent event)
+	{
+		plugin.currentGame.logBlock(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ(), event.getBlock().getType(), event.getBlock().getData());
+	}
+	
+	@EventHandler
+	public void LogDecayDestruction(LeavesDecayEvent event) {
+		plugin.currentGame.logBlock(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ(), event.getBlock().getType(), event.getBlock().getData());
 	}
 	
 	@EventHandler
@@ -62,13 +84,18 @@ public class BlockListener implements Listener
 				}
 			}
 		}
+		if ( !event.isCancelled() )
+		{
+			plugin.currentGame.logBlock(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ(), event.getBlock().getType(), event.getBlock().getData());
+		}
 	}
 	
 	@EventHandler
 	public void playerOpensChest(PlayerInteractEvent event) 
 	{
 		if ( plugin.currentGame == null ) return;
-		if ( event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.CHEST) {
+		if ( event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.CHEST)
+		{
 			Chest chest = (Chest)event.getClickedBlock().getState();
 			
 			HungerPlayer player = plugin.currentGame.getPlayer(event.getPlayer());

@@ -52,6 +52,13 @@ public class HungerGames extends JavaPlugin
 	public Game currentGame = null;
 	public static org.bukkit.util.Vector hackyTestPos = null;
 	
+	public void cleanupGame()
+	{
+		killedPlayers.clear();
+		currentGame.revertBlockChanges();
+		currentGame = null;
+	}
+	
 	public void onEnable()
 	{
 		entityListener = new EntityListener(this);
