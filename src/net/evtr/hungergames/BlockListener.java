@@ -62,13 +62,18 @@ public class BlockListener implements Listener
 				}
 			}
 		}
+		if ( !event.isCancelled() )
+		{
+			plugin.currentGame.logBlock(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ(), event.getBlock().getType(), event.getBlock().getData());
+		}
 	}
 	
 	@EventHandler
 	public void playerOpensChest(PlayerInteractEvent event) 
 	{
 		if ( plugin.currentGame == null ) return;
-		if ( event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.CHEST) {
+		if ( event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.CHEST)
+		{
 			Chest chest = (Chest)event.getClickedBlock().getState();
 			
 			HungerPlayer player = plugin.currentGame.getPlayer(event.getPlayer());

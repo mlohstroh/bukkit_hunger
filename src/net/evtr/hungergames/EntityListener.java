@@ -30,7 +30,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -59,12 +58,6 @@ public class EntityListener implements Listener
 				event.setCancelled(false);
 			}
 		}
-	}
-	
-	@EventHandler
-	public void OnPlayerInteract(PlayerInteractEvent event)
-	{
-		
 	}
 	
 	public void OnPlayerJoin(PlayerJoinEvent event)
@@ -133,7 +126,7 @@ public class EntityListener implements Listener
 						+ hWinner.getPlayerName() + " won the Hunger Games with " + hWinner.getKills()
 						+ (hWinner.getKills() == 0 || hWinner.getKills() > 1 ? " kills!" : " kill!"));
 					
-					plugin.currentGame = null; //TODO Add some kind of fancy cleanup to not break everything?
+					plugin.cleanupGame();
 				}
 				else
 				{
@@ -143,10 +136,6 @@ public class EntityListener implements Listener
 					
 				}
 			}
-			
-			
-			
-			
 		}
 	}
 }
