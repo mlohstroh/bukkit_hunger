@@ -81,7 +81,10 @@ public class InventoryManager {
 	
 	public void addNewTemplate(InventoryTemplate template)
 	{
+		template.minRange = lastChance;
+		template.maxRange = lastChance + template.totalTokens;
 		templates.add(template);
+		lastChance += template.totalTokens;
 	}
 	
 	public void addNewTemplate(ItemStack[] items, int chance, int max) 
@@ -124,7 +127,7 @@ public class InventoryManager {
 		for(int i = 0; i < templates.size(); i++)
 		{
 			InventoryTemplate temp = templates.get(i);
-			if(temp.minRange <= startingPoint && temp.maxRange < startingPoint)
+			if(temp.minRange <= startingPoint && temp.maxRange > startingPoint)
 			{
 				return templates.get(i);
 			}

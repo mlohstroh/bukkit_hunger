@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 public class InventoryTemplate 
 {
 	public static int nextID = 1;
-	public int minRange, maxRange;
+	public int minRange, maxRange, totalTokens;
 	public Vector<ItemStack> items;
 	public int id;
 	

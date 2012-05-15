@@ -100,12 +100,11 @@ public class Game
 			{
 				if (!line.equalsIgnoreCase("") && !line.startsWith("#"))
 				{
-					plugin.log.info(line); //debug purposes
 					String[] lines = line.split(":");
 					
 					InventoryTemplate template = new InventoryTemplate();
-					template.minRange = Integer.valueOf(lines[0]);
-					for(int i = 1; i < lines.length - 1; i++)
+					template.totalTokens = Integer.valueOf(lines[0]);
+					for(int i = 1; i < lines.length; i++)
 					{
 						String[] stringItems = lines[i].split(",");
 						ItemStack stack = new ItemStack(Material.getMaterial(Integer.valueOf(stringItems[0])), Integer.valueOf(stringItems[1]));
