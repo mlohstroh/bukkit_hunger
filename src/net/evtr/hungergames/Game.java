@@ -119,15 +119,6 @@ public class Game
 		{
 			e.printStackTrace();
 		}
-		
-//		inventory.addNewTemplate(new Material[] { Material.BREAD, Material.COOKED_FISH, Material.APPLE }, 50 );
-//		inventory.addNewTemplate(new Material[] { Material.COOKED_CHICKEN }, 100);
-//		inventory.addNewTemplate(new Material[] { Material.STONE_SWORD, Material.COOKED_FISH }, 50 );
-//		inventory.addNewTemplate(new Material[] { Material.COOKED_CHICKEN, Material.COOKED_CHICKEN, Material.APPLE, Material.BREAD, Material.BREAD }, 25 );
-//		inventory.addNewTemplate(new Material[] { Material.STONE_SWORD, Material.IRON_CHESTPLATE, Material.COOKED_BEEF }, 25);
-//		inventory.addNewTemplate(new Material[] { Material.BOW, Material.ARROW, Material.ARROW, Material.ARROW, Material.ARROW, Material.ARROW, Material.COOKED_CHICKEN }, 25);
-//		inventory.addNewTemplate(new Material[] { Material.LEATHER_CHESTPLATE}, 50);
-//		inventory.addNewTemplate(new Material[] { Material.LEATHER_HELMET}, 75);
 	}
 	
 	public HungerPlayer getHungerPlayerByName(String name)
@@ -199,6 +190,11 @@ public class Game
 			}
 		}
 		return true;
+	}
+	
+	public Collection<HungerPlayer> getAllPlayers()
+	{
+		return this.hungerPlayers.values();
 	}
 	
 	public Collection<HungerSponsor> GetAllSponsors()

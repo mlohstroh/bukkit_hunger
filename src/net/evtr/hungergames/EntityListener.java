@@ -93,7 +93,7 @@ public class EntityListener implements Listener
 		{
 			if(plugin.currentGame != null)
 			{
-				killer = plugin.currentGame.getPlayer(player);
+				killer = plugin.currentGame.getPlayer(player.getKiller());
 			}
 		}
 
@@ -129,6 +129,7 @@ public class EntityListener implements Listener
 				if ( livingPlayers.size() == 1 ) 
 				{
 					HungerPlayer hWinner = livingPlayers.get(0);
+					
 					plugin.getServer().broadcastMessage(ChatColor.GOLD + ""
 						+ hWinner.getPlayerName() + " won the Hunger Games with " + hWinner.getKills()
 						+ (hWinner.getKills() == 0 || hWinner.getKills() > 1 ? " kills!" : " kill!"));
@@ -143,10 +144,6 @@ public class EntityListener implements Listener
 					
 				}
 			}
-			
-			
-			
-			
 		}
 	}
 }

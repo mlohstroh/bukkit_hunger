@@ -37,6 +37,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.Potion;
@@ -256,7 +257,6 @@ public class HungerGames extends JavaPlugin
 					{
 						if(args.length == 2)
 						{
-							//TODO: for some reason, this won't work... :(
 							if(args[1].equalsIgnoreCase("m"))
 							{
 								for(HungerPlayer hPlayer : currentGame.getAlivePlayers())
@@ -266,38 +266,24 @@ public class HungerGames extends JavaPlugin
 									playerVec = playerVec.normalize();
 									playerVec.setX(playerVec.getX() + 10);
 									loc = new Location(player.getWorld(), playerVec.getX(), playerVec.getY(), playerVec.getZ());
-									hPlayer.getPlayer().getWorld().spawnCreature(loc, EntityType.ZOMBIE);
+									Monster entity = (Monster)loc.getWorld().spawnCreature(loc, EntityType.ZOMBIE);
+									entity.setTarget(hPlayer.getPlayer());
 									playerVec.setX(playerVec.getX() - 20);
 									loc = new Location(player.getWorld(), playerVec.getX(), playerVec.getY(), playerVec.getZ());
-									hPlayer.getPlayer().getWorld().spawnCreature(loc, EntityType.ZOMBIE);
+									entity = (Monster)loc.getWorld().spawnCreature(loc, EntityType.ZOMBIE);
+									entity.setTarget(hPlayer.getPlayer());
 									playerVec.setX(playerVec.getX() + 10);
 									playerVec.setZ(playerVec.getZ() + 10);
-									hPlayer.getPlayer().getWorld().spawnCreature(loc, EntityType.ZOMBIE);
+									entity = (Monster)loc.getWorld().spawnCreature(loc, EntityType.ZOMBIE);
+									entity.setTarget(hPlayer.getPlayer());
 									playerVec.setZ(playerVec.getZ() - 20);
-									hPlayer.getPlayer().getWorld().spawnCreature(loc, EntityType.ZOMBIE);
+									entity = (Monster)loc.getWorld().spawnCreature(loc, EntityType.ZOMBIE);
+									entity.setTarget(hPlayer.getPlayer());
 								}
 							}
 						}
 					}
 				}
-				
-//				if ( args[0].equalsIgnoreCase("sp") ) 
-//				{
-//					if ( currentGame != null ) 
-//					{
-//						HungerPlayer hPlayer = currentGame.getPlayer(player);
-//						if ( hPlayer.mIsDied ) 
-//						{
-//							hPlayer.mIsSponsor = true;
-//							player.sendMessage(ChatColor.GOLD + "You can now give people some MONIES.");
-//							//TODO: Make them a proper sponsor.
-//						}
-//						else 
-//						{
-//							player.sendMessage(ChatColor.RED + "You're not dead yet!");
-//						}
-//					}
-//				}
 			}
 		}
 		
@@ -316,12 +302,11 @@ public class HungerGames extends JavaPlugin
 			this.MakePlayerInvisible();
 			this.AccelerateHunger();
 		
-		if(currentGame != null)
-		{
-			currentGame.ForcePlayersTogether();
-			currentGame.CheckForSponsorGifts();
-
-		}
+			if(currentGame != null)
+			{
+				currentGame.ForcePlayersTogether();
+				currentGame.CheckForSponsorGifts();
+			}
 		}
 
 		catch (Exception ex)
