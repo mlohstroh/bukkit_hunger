@@ -32,6 +32,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class BlockListener implements Listener
@@ -45,6 +48,23 @@ public class BlockListener implements Listener
 		allowedMaterials = new Vector<Material>();
 		allowedMaterials.add(Material.LEAVES);
 		allowedMaterials.add(Material.GRASS);
+	}
+	
+	@EventHandler
+	public void LogBurnDestruction(BlockBurnEvent event)
+	{
+		plugin.currentGame.logBlock(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ(), event.getBlock().getType(), event.getBlock().getData());
+	}
+	
+	@EventHandler
+	public void LogPhysicsDestruction(BlockPhysicsEvent event)
+	{
+		plugin.currentGame.logBlock(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ(), event.getBlock().getType(), event.getBlock().getData());
+	}
+	
+	@EventHandler
+	public void LogDecayDestruction(LeavesDecayEvent event) {
+		plugin.currentGame.logBlock(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ(), event.getBlock().getType(), event.getBlock().getData());
 	}
 	
 	@EventHandler
